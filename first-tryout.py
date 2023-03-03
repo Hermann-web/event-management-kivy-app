@@ -15,7 +15,6 @@ from kivymd.uix.textfield import MDTextField
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
 
-
 screen_helper = """
 ScreenManager:
     LoginScreen:
@@ -44,7 +43,20 @@ ScreenManager:
     name: 'list'
     ScrollView:
         MDList:
-            id: assignmentList
+            id: user_list
+            TwoLineListItem:
+                text: "John Smith"
+                secondary_text: '''
+                    CIN: 1234567890
+                    Role: Manager
+                    Firm: ACME Inc
+                    '''
+            TwoLineListItem:
+                text: "Alice Johnson"
+                secondary_text: 
+                    '''CIN: 0987654321
+                    Role: Engineer
+                    Firm: XYZ Corp'''
     MDFloatingActionButton:
         icon: 'plus'
         pos_hint: {'center_x':0.9, 'center_y':0.05}
