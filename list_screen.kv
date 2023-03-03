@@ -1,0 +1,11 @@
+<ListScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        ScrollView:
+            MDList:
+                id: user_list
+        MDFloatingActionButton:
+            icon: 'plus'
+            md_bg_color: app.theme_cls.accent_color
+            pos_hint: {'center_x': .5, 'center_y': .1}
+            on_press: app.add_user_dialog()
