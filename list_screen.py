@@ -1,7 +1,8 @@
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.list import MDList, TwoLineListItem, ImageLeftWidget
 from kivy.lang import Builder
-from db_json.clients_handler import get_clients
+#from db.db_json.clients_handler import get_clients
+from db.crud_functions import get_clients
 
 Builder.load_file('list_screen.kv')
 

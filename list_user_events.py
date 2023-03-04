@@ -1,8 +1,8 @@
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.list import MDList, TwoLineListItem, ImageLeftWidget
 from kivy.lang import Builder
-from db_json.clients_handler import  get_client_choices, filter_client_choices
-
+#from db.db_json.clients_handler import  filter_client_choices
+from db.crud_functions import filter_client_choices
 
 Builder.load_file('list_user_events.kv')
 
@@ -13,10 +13,10 @@ class ListUserEventsScreen(Screen):
     
     def on_pre_enter(self, *args):
         self.ids.user_event_list.clear_widgets()
-        client_id = self.manager.data["client_id"]
-        event_id = self.manager.data["event_id"]
-        day = self.manager.data["day"]
-        hour = self.manager.data["hour"]
+        client_id = self.manager.data.get("client_id")
+        event_id = self.manager.data.get("event_id")
+        day = self.manager.data.get("day")
+        hour = self.manager.data.get("hour")
         print("client_id landed: ",client_id)
         # call the get_clients function to retrieve a list of client dictionaries
         user_events = filter_client_choices(id_client=client_id, id_event=event_id, day=day, hour=hour)

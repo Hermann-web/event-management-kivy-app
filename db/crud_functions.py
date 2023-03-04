@@ -49,7 +49,7 @@ def get_client_choices():
     return list(client_choices)
 
 
-def filter_client_choices(id_client=None, id_event=None):
+def filter_client_choices(id_client=None, id_event=None, day=None, hour=None):
     """
     Filters client_choice documents in the client_choices collection based on the provided id_client and/or id_event.
     If neither id_client nor id_event are provided, returns the full list.
@@ -67,6 +67,10 @@ def filter_client_choices(id_client=None, id_event=None):
         filter_query['id_client'] = id_client
     if id_event:
         filter_query['id_event'] = id_event
+    if day:
+        filter_query['day'] = day
+    if hour:
+        filter_query['hour'] = hour
     if not filter_query:
         # If no filters are provided, return the full list
         filtered_choices = db[COLLECTION_CLIENT_CHOICES].find()
