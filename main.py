@@ -20,41 +20,57 @@ from config import DEBUG
 #kivy_deps.angle_backend.ensure_surface_initialized()
 
 class RootScreenManager(ScreenManager):
-    def switch_screen(self, screen_name, **kwargs):
+    def switch_screen(self, screen_name, current, **kwargs):
         try:
-            if screen_name == screen_login_str:
-                direction = 'right'
-            elif screen_name == screen_list_participants_str:
-                direction = 'left'
-            else:
+            if current == screen_login_str:
+                direction = 'up'
+            elif screen_name == screen_login_str:
                 direction = 'down'
+            
+            elif current == screen_list_user_events_str:
+                direction = 'down'
+            elif screen_name == screen_list_user_events_str:
+                direction = 'up'
+            
+            elif current == screen_list_participants_str:
+                if screen_name == screen_list_events_str:
+                    direction = 'left'
+                else:
+                    direction = ''
+            elif current == screen_list_events_str:
+                if screen_name == screen_list_participants_str:
+                    direction = 'right'
+                else:
+                    direction = ''
+            else:
+                direction = ''
             self.transition = SlideTransition(direction=direction)
             self.data = kwargs
             self.current = screen_name
         except Exception as e:
-            self.display_error_message(e, "switching screens")
+            self.display_error_message(e, f"switching screens from {current} to {screen_name}")
 
-    def to_login_screen(self):
+    def to_login_screen(self, current):
         try:
-            self.switch_screen(screen_login_str)
+            self.switch_screen(screen_login_str, current=current)
         except Exception as e:
             self.display_error_message(e, "switching to login screen")
 
-    def to_users_list_screen(self):
+    def to_users_list_screen(self, current):
         try:
-            self.switch_screen(screen_list_participants_str)
+            self.switch_screen(screen_list_participants_str, current=current)
         except Exception as e:
             self.display_error_message(e, "switching to user list screen")
 
-    def to_user_events_list_screen(self, client_id):
+    def to_user_events_list_screen(self, current, client_id):
         try:
-            self.switch_screen(screen_list_user_events_str, client_id=client_id)
+            self.switch_screen(screen_list_user_events_str, current=current, client_id=client_id)
         except Exception as e:
             self.display_error_message(e, "switching to user events screen")
 
-    def to_events_screen(self):
+    def to_events_screen(self, current):
         try:
-            self.switch_screen(screen_list_events_str)
+            self.switch_screen(screen_list_events_str, current=current)
         except Exception as e:
             self.display_error_message(e, "switching to events screen")
     
@@ -83,30 +99,30 @@ class UserListApp(MDApp):
         return sm
 
     
-    def to_login_screen(self):
+    def to_login_screen(self, current):
         try:
-            self.sm.switch_screen(screen_login_str)
+            self.sm.to_login_screen(current)
         except Exception as e:
             logging.error(f"An error occurred while switching to login screen: {e}")
             self.sm.show_popup("An error occurred. Please try again later.")
 
-    def to_users_list_screen(self):
+    def to_users_list_screen(self, current):
         try:
-            self.sm.switch_screen(screen_list_participants_str)
+            self.sm.to_users_list_screen(current)
         except Exception as e:
             logging.error(f"An error occurred while switching to users list screen: {e}")
             self.sm.show_popup("An error occurred. Please try again later.")
 
-    def to_user_events_list_screen(self, client_id):
+    def to_user_events_list_screen(self, current, client_id):
         try:
-            self.sm.to_user_events_list_screen(client_id)
+            self.sm.to_user_events_list_screen(current, client_id)
         except Exception as e:
             logging.error(f"An error occurred while switching to user events list screen: {e}")
             self.sm.show_popup("An error occurred. Please try again later.")
 
-    def to_events_screen(self):
+    def to_events_screen(self, current):
         try:
-            self.sm.switch_screen(screen_list_events_str)
+            self.sm.to_events_screen(current)
         except Exception as e:
             logging.error(f"An error occurred while switching to events list screen: {e}")
             self.sm.show_popup("An error occurred. Please try again later.")

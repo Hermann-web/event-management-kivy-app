@@ -12,7 +12,8 @@ Builder.load_file(__file__[:-2]+"kv")
 class ListUserEventsScreen(Screen):
     def __init__(self, **kwargs):
         super(ListUserEventsScreen, self).__init__(**kwargs)
-    
+        self.screen_name = kwargs["name"]
+        
     def on_pre_enter(self, *args):
         self.ids.user_event_list.clear_widgets()
         client_id = self.manager.data.get("client_id")

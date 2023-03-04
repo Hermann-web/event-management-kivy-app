@@ -45,10 +45,10 @@
                 icon: 'login'
                 md_bg_color: app.theme_cls.primary_color
                 pos_hint: {'center_x': .5, 'center_y': .5}
-                on_press: app.to_login_screen()
+                on_press: app.to_login_screen(root.screen_name) #root. for ListScreen(list_screen.py), app. for UserListApp(main.py)
 
             MDFloatingActionButton:
                 icon: 'calendar-text'
                 md_bg_color: app.theme_cls.accent_color
                 pos_hint: {'center_x': .5, 'center_y': .5}
-                on_press: app.to_events_screen()
+                on_press: app.to_events_screen(root.screen_name)

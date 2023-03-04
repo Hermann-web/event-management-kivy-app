@@ -12,6 +12,7 @@ Builder.load_file(__file__[:-2]+"kv")
 class ListScreen(Screen):
     def __init__(self, **kwargs):
         super(ListScreen, self).__init__(**kwargs)
+        self.screen_name = kwargs["name"]
     
     def on_pre_enter(self, *args):
         self.ids.user_list.clear_widgets()
@@ -32,10 +33,17 @@ class ListScreen(Screen):
                                         )
             self.ids.user_list.add_widget(user_item)
 
+    def to_login_screen_(self):
+        self.manager.to_login_screen(self.screen_name)
+
+    def to_events_screen_(self):
+        self.manager.to_events_screen(self.screen_name)
     
+    def to_user_events_list_screen_(self, client_id):
+        self.manager.to_user_events_list_screen(self.screen_name, client_id=client_id)
 
     def view_events(self, client_id):
         # Here, you can retrieve the events for the given client_id and display them in the user_events screen.
         # You can use the id_event to retrieve the event information from the database.
         print("client_id = ",client_id)
-        self.manager.to_user_events_list_screen(client_id=client_id)
+        self.to_user_events_list_screen_(client_id=client_id)
