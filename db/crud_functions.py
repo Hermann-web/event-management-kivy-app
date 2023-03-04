@@ -3,7 +3,7 @@ import json
 from setup import get_database, parse_mongo_obj_to_json_serializable
 from config import COLLECTION_CLIENTS, COLLECTION_CLIENT_CHOICES
 from config import CLIENTS_TEMP_PATH
-
+from config import logging
 
 
 def get_clients():
@@ -17,13 +17,13 @@ def get_clients():
         with open(CLIENTS_TEMP_PATH) as f: 
             clients = json.load(f)
     except Exception as e:
-        print("warning:",e)
+        logging.warning(e)
         _, db = get_database()
         clients = db[COLLECTION_CLIENTS].find()
         clients = parse_mongo_obj_to_json_serializable(clients)
         # save to temp
         with open(CLIENTS_TEMP_PATH, "w") as f: json.dump(clients, f)
-        print(f"...clients data save to ",CLIENTS_TEMP_PATH)
+        logging.info(f"...clients data save to {CLIENTS_TEMP_PATH}")
     return clients
 
 

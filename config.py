@@ -1,6 +1,8 @@
 import os 
+import logging
 
 PROD_ENV = False
+DEBUG = True
 
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'
@@ -27,8 +29,22 @@ COLLECTION_EVENTS = "events"
 COLLECTION_CLIENT_CHOICES = "client_choices"
 
 TEMP_FOLDER = "tmp"
-if not os.path.exists(TEMP_FOLDER):
-    print("...creating tmp directory")
-    os.makedirs(TEMP_FOLDER)
-
+if not os.path.exists(TEMP_FOLDER):os.makedirs(TEMP_FOLDER)
 CLIENTS_TEMP_PATH = "tmp/clients_tmp.json"
+
+
+
+LOG_FOLDER = "logs"
+if not os.path.exists(LOG_FOLDER):os.makedirs(LOG_FOLDER)
+
+# Configure the logging module
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    handlers=[logging.FileHandler(f'{LOG_FOLDER}/myapp.log')])
+
+# Example usage
+# logging.debug('Debug message')
+# logging.info('Info message')
+# logging.warning('Warning message')
+# logging.error('Error message')
+# logging.critical('Critical message')

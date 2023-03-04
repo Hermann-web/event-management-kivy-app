@@ -5,9 +5,10 @@ __author__      = "Hermann Agossou"
 from pymongo import MongoClient, errors #do not remove (errors is used elsewhere)
 from config import PROD_ENV
 from config import CONNECTION_STRING, DATABASE_NAME
+from config import logging 
 
-print(f"...PROD_ENV is set to ",PROD_ENV)
-print(f"...DATABASE_NAME: ",DATABASE_NAME)
+logging.info(f"...PROD_ENV is set to {PROD_ENV}")
+logging.info(f"...DATABASE_NAME: {DATABASE_NAME}")
 
 def parse_mongo_obj_to_json_serializable(list_obj):
     list_obj = list(list_obj)
@@ -16,6 +17,7 @@ def parse_mongo_obj_to_json_serializable(list_obj):
     return list_obj
 
 def get_database():
+    logging.info(f"database call: {DATABASE_NAME}")
     # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
     client = MongoClient(CONNECTION_STRING)
     # Create the database for our example (we will use the same database throughout the tutorial
