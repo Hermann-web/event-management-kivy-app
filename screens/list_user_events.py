@@ -1,11 +1,12 @@
 ## list_user_events.py
+import os.path
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.list import MDList, TwoLineListItem, ImageLeftWidget
 from kivy.lang import Builder
 #from db.db_json.clients_handler import  filter_client_choices
 from db.crud_functions import filter_client_choices
 
-Builder.load_file('list_user_events.kv')
+Builder.load_file(__file__[:-2]+"kv")
 
 
 class ListUserEventsScreen(Screen):

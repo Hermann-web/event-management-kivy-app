@@ -6,9 +6,9 @@ from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 
-from list_screen import ListScreen
-from login_screen import LoginScreen
-from list_user_events import ListUserEventsScreen
+from screens.list_screen import ListScreen
+from screens.login_screen import LoginScreen
+from screens.list_user_events import ListUserEventsScreen
 from config import (
     screen_login_str, screen_list_participants_str, 
     screen_list_user_events_str, screen_list_events_str

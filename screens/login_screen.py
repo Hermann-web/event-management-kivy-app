@@ -1,9 +1,10 @@
 ## login_screen.py
+import os.path
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 
-Builder.load_file('login_screen.kv')
+Builder.load_file(__file__[:-2]+"kv")
 
 class LoginScreen(Screen):
     def __init__(self, **kwargs):

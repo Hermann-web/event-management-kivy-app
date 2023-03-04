@@ -1,11 +1,12 @@
 ## list_screen.py
+import os.path
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.list import MDList, TwoLineListItem, ImageLeftWidget
 from kivy.lang import Builder
 #from db.db_json.clients_handler import get_clients
 from db.crud_functions import get_clients
 
-Builder.load_file('list_screen.kv')
+Builder.load_file(__file__[:-2]+"kv")
 
 
 class ListScreen(Screen):
