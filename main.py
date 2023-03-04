@@ -1,6 +1,7 @@
 # main.py
 from config import logging
 
+from kivy.resources import resource_add_path, resource_find
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivy.uix.popup import Popup
@@ -14,6 +15,10 @@ from config import (
     screen_list_user_events_str, screen_list_events_str
 )
 from config import DEBUG
+
+# for pyinstaller #to make sure the graphic backend is initialized properly
+#import kivy_deps
+#kivy_deps.angle_backend.ensure_surface_initialized()
 
 class RootScreenManager(ScreenManager):
     def switch_screen(self, screen_name, **kwargs):
@@ -107,8 +112,14 @@ class UserListApp(MDApp):
             logging.error(f"An error occurred while switching to events list screen: {e}")
             self.sm.show_popup("An error occurred. Please try again later.")
 
+
+
 if __name__ == '__main__':
-    UserListApp().run()
-
-
-
+    try:
+        if hasattr(sys, '_MEIPASS'):
+            resource_add_path(os.path.join(sys._MEIPASS))
+        app = UserListApp()
+        app.run()
+    except Exception as e:
+        print(e)
+        input("Press enter.")

@@ -23,6 +23,9 @@ RAW_JSON_EVENTS = "db/db_json/events_raw.json"
 JSON_CLIENT_CHOICES = "db/db_json/client_choices_clean.json"
 RAW_JSON_CLIENT_CHOICES = "db/db_json/client_choices_raw.json"
 
+BACKUP_FOLDER = "db/backups"
+if not os.path.exists("db"):os.makedirs("db")
+if not os.path.exists(BACKUP_FOLDER):os.makedirs(BACKUP_FOLDER)
 
 COLLECTION_CLIENTS = "clients"
 COLLECTION_EVENTS = "events"
