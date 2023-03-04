@@ -31,7 +31,7 @@ def preprocess_json_for_colllection(sanitize_fct, columns, raw_json_path,
       df.to_json(cleaned_json_path, orient="records", indent=4)
 
 
-def get_client_collection():
+def get_client_collection(collection_name):
    # Get the database using the method we defined in pymongo_test_insert file
    _, dbname = get_database()
    collection = dbname[COLLECTION_CLIENTS]
@@ -54,7 +54,7 @@ def get_client_collection():
    return collection
 
 
-def get_event_collection():
+def get_event_collection(collection_name):
    # Get the database using the method we defined in pymongo_test_insert file
    _, dbname = get_database()
    collection = dbname[COLLECTION_EVENTS]
@@ -66,10 +66,10 @@ def get_event_collection():
    # pas de repetiton (day, hour)
    return collection
 
-def get_user_event_collection():
+def get_user_event_collection(collection_name):
    # Get the database using the method we defined in pymongo_test_insert file
    _, dbname = get_database()
-   collection = dbname[COLLECTION_EVENTS]
+   collection = dbname[COLLECTION_CLIENT_CHOICES]
    try:
       collection.create_index("index", unique=True)
       print("--> Success\nUnique number index created successfully.")
@@ -180,48 +180,40 @@ def sanitize_user_event_data(df:pd.DataFrame, **kwargs):
       for col in set(df.columns)-{"time_presence"}:
          assert df[col].isna().sum()==0
 
-def clean_clients():
-      collection = get_client_collection()
-      columns = ["index","firstname","surname","reference","firm","role","cin","email"]
-      df = get_raw_clients(json_fpath=RAW_JSON_CLIENTS,columns=columns)
-      sanitize_client_data(df)
-      items = df.to_dict('records')
-      print(f"--> Data:Items\n{items}")
-      #client_insertion(collection, items)
-      df.to_json(JSON_CLIENTS, orient="records", indent=4)
-
-
 
 def clean_clients():
+      collection_name = COLLECTION_CLIENTS
       columns = ["index","firstname","surname","reference","firm","role","cin","email"]
-      collection = get_client_collection()
       raw_json_path = RAW_JSON_CLIENTS
       cleaned_json_path = JSON_CLIENTS
       sanitize_fct=sanitize_client_data
+      collection = get_user_event_collection(collection_name)
       preprocess_json_for_colllection(sanitize_fct=sanitize_fct, columns=columns, 
                                        raw_json_path=raw_json_path, cleaned_json_path=cleaned_json_path, 
                                        collection=collection)
 
 
 def clean_events():
+      collection_name = COLLECTION_EVENTS
       columns = ["index", "type", "lecturer", "day","time"]
-      collection = get_event_collection()
       raw_json_path = RAW_JSON_EVENTS
       cleaned_json_path = JSON_EVENTS
       sanitize_fct=sanitize_event_data
       time_format = "%I:%M %p" #like "3:15 PM"
       day_map = {"2022-01-01":1, "2022-01-02":2, "2022-01-03":3, "2022-01-04":4 }
+      collection = get_user_event_collection(collection_name)
       preprocess_json_for_colllection(sanitize_fct=sanitize_fct, columns=columns, 
                                        raw_json_path=raw_json_path, cleaned_json_path=cleaned_json_path, 
                                        collection=collection, time_format=time_format, day_map=day_map)
 
 def clean_user_events():
+      collection_name = COLLECTION_CLIENT_CHOICES
       columns = ["index","id_client", "id_event", "is_present", "time_presence"]
-      collection = get_user_event_collection()
       raw_json_path = RAW_JSON_CLIENT_CHOICES
       cleaned_json_path = JSON_CLIENT_CHOICES
       sanitize_fct=sanitize_user_event_data
       time_format = "%I:%M %p" #like "3:15 PM"
+      collection = get_user_event_collection(collection_name)
       preprocess_json_for_colllection(sanitize_fct=sanitize_fct, columns=columns, 
                                        raw_json_path=raw_json_path, cleaned_json_path=cleaned_json_path, 
                                        collection=collection, time_format=time_format)
