@@ -1,10 +1,16 @@
+import pymongo
+
+PROD_ENV = True
+
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'
 screen_list_user_events_str = 'list_user_events_screen'
 
-# Define the MongoDB Atlas connection string and database name
+# Provide the mongodb atlas url to connect python to mongodb using pymongo
 CONNECTION_STRING = "mongodb+srv://pkaCbXZuJtChwHlaMcbr:Uz51Mew4Y0NmQP0C@cluster0.x4jt5zg.mongodb.net/?retryWrites=true&w=majority"
-DATABASE_NAME = "AttendanceDb"
+DATABASE_NAME = "AttendanceDb" if PROD_ENV else "AttendanceDbTest"
+
+
 
 # Define the paths to the JSON data files
 JSON_CLIENTS = "db/db_json/clients_clean.json"

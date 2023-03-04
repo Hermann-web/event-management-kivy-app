@@ -1,7 +1,7 @@
-import pymongo
 import json
 from datetime import datetime
-from config import CONNECTION_STRING,DATABASE_NAME
+from config import get_database
+from config import PROD_ENV
 from config import JSON_CLIENTS,JSON_EVENTS,JSON_CLIENT_CHOICES
 # colections names
 from config import COLLECTION_CLIENTS,COLLECTION_EVENTS,COLLECTION_CLIENT_CHOICES
@@ -51,14 +51,14 @@ def import_local_json_online_bdd(db):
 
 
 def import_json_data_to_mongodb_atlas():
-    # Connect to the MongoDB Atlas cluster
-    client = pymongo.MongoClient(CONNECTION_STRING)
-    db = client[DATABASE_NAME]
-    # Create backups of the clients, events, and client_choices collections
-    create_backups(db)
-    # Delete all documents from the clients, events, and client_choices collections
-    delete_collections(db)
-    # Load the all clollections JSON data and insert it into the db online
-    import_local_json_online_bdd(db)
-    # Close the MongoDB Atlas connection
-    client.close()
+    if not PROD_ENV and 0:
+        # Connect to the MongoDB Atlas cluster
+        client, db = get_database()
+        # Create backups of the clients, events, and client_choices collections
+        create_backups(db)
+        # Delete all documents from the clients, events, and client_choices collections
+        delete_collections(db)
+        # Load the all clollections JSON data and insert it into the db online
+        import_local_json_online_bdd(db)
+        # Close the MongoDB Atlas connection
+        client.close()

@@ -112,52 +112,38 @@
         "time_presence": null
     },
     {
-        "index": 15,
+        "index": 17,
         "id_client": 5,
         "id_event": 3,
         "is_present": true,
         "time_presence": null
     },
     {
-        "index": 16,
+        "index": 18,
         "id_client": 2,
         "id_event": 3,
         "is_present": null,
         "time_presence": null
     },
     {
-        "index": 17,
+        "index": 19,
         "id_client": 6,
         "id_event": 3,
         "is_present": false,
         "time_presence": null
     },
     {
-        "index": 18,
+        "index": 20,
         "id_client": 3,
         "id_event": 4,
         "is_present": null,
         "time_presence": "2:30 PM"
     },
     {
-        "index": 19,
+        "index": 21,
         "id_client": 7,
         "id_event": 4,
         "is_present": true,
-        "time_presence": null
-    },
-    {
-        "index": 20,
-        "id_client": 4,
-        "id_event": 5,
-        "is_present": true,
-        "time_presence": null
-    },
-    {
-        "index": 21,
-        "id_client": 1,
-        "id_event": 5,
-        "is_present": false,
         "time_presence": null
     },
     {
