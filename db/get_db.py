@@ -19,7 +19,7 @@ def get_database():
    # Create the database for our example (we will use the same database throughout the tutorial
    return client['AttendanceDb']
 
-def get_items(items):
+'''def get_items(items):
    expiry_date = '2021-07-13T00:00:00.000Z'
    expiry = parser.parse(expiry_date)
    items = [{
@@ -55,3 +55,4 @@ def get_data(selection=None):
    else:
       assert isinstance(selection, dict)
       res = collection_name.find(selection)
+'''

@@ -1,4 +1,4 @@
-<ListScreen>:
+<ListUserEventsScreen>:
     BoxLayout:
         orientation: 'vertical'
         size_hint: None, None
@@ -22,14 +22,14 @@
             #padding: dp(100)
             
             Label:
-                text: 'Participants'
+                text: 'Events'
                 font_size: dp(24)
                 color: 0, 1, 1, 1
                 pos_hint: {'center_x':0.5, 'center_y':0.5}
 
         ScrollView:
             MDList:
-                id: user_list
+                id: user_event_list
                 theme_text_color: "Custom"
                 text_color: 1, 1, 1, 1
 
@@ -40,15 +40,10 @@
             width: dp(root.width * 0.5)
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             padding: dp(5)
-            
-            MDFloatingActionButton:
-                icon: 'login'
-                md_bg_color: app.theme_cls.primary_color
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                on_press: app.to_login_screen()
 
             MDFloatingActionButton:
-                icon: 'calendar-text'
+                icon: 'account-multiple'
                 md_bg_color: app.theme_cls.accent_color
                 pos_hint: {'center_x': .5, 'center_y': .5}
-                on_press: app.to_events_screen()
+                on_press: app.to_users_list_screen()
+            

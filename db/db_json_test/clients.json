@@ -1,0 +1,20 @@
+[{
+    "index": 1,
+    "firstname": "John",
+    "surname": "Doe",
+    "reference": "JD123",
+    "firm": "ABC Inc",
+    "role": "Manager",
+    "cin": "1234567890",
+    "email": "john.doe@abc.com"
+},
+{
+    "index": 2,
+    "firstname": "Jane",
+    "surname": "Smith",
+    "reference": "JS456",
+    "firm": "XYZ Corp",
+    "role": "Engineer",
+    "cin": "0987654321",
+    "email": "jane.smith@xyz.com"
+}]
