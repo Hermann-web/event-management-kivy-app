@@ -1,7 +1,6 @@
 # main.py
 from config import logging
 
-from kivy.resources import resource_add_path, resource_find
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivy.uix.popup import Popup
@@ -115,6 +114,10 @@ class UserListApp(MDApp):
 
 
 if __name__ == '__main__':
+    app = UserListApp()
+    app.run()
+    '''
+    from kivy.resources import resource_add_path, resource_find
     try:
         if hasattr(sys, '_MEIPASS'):
             resource_add_path(os.path.join(sys._MEIPASS))
@@ -122,4 +125,4 @@ if __name__ == '__main__':
         app.run()
     except Exception as e:
         print(e)
-        input("Press enter.")
+        input("Press enter.")'''
