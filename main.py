@@ -1,11 +1,14 @@
-# main.py
+## main.py
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
 
 from list_screen import ListScreen
 from login_screen import LoginScreen
 from list_user_events import ListUserEventsScreen
-from config import screen_login_str, screen_list_participants_str, screen_list_user_events_str
+from config import (
+    screen_login_str, screen_list_participants_str, 
+    screen_list_user_events_str, screen_list_events_str
+    )
 
 class RootScreenManager(ScreenManager):
     def switch_screen(self, screen_name, **kwargs):

@@ -5,7 +5,7 @@ __author__      = "Hermann Agossou"
 # source
 # https://www.mongodb.com/languages/python#prerequisites
 # 
-from config import get_database
+from setup import get_database
 from dateutil import parser
 
 

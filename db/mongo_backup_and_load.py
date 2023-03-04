@@ -1,28 +1,26 @@
 import json
 from datetime import datetime
-from config import get_database
+from setup import parse_mongo_obj_to_json_serializable, get_database
 from config import PROD_ENV
 from config import JSON_CLIENTS,JSON_EVENTS,JSON_CLIENT_CHOICES
 # colections names
 from config import COLLECTION_CLIENTS,COLLECTION_EVENTS,COLLECTION_CLIENT_CHOICES
 
+
 def create_backups(db):
     # Define the paths to the backup files
-    BACKUP_CLIENTS = "db/backups/clients_backup_{}.json".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-    BACKUP_EVENTS = "db/backups/events_backup_{}.json".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-    BACKUP_CLIENT_CHOICES = "db/backups/client_choices_backup_{}.json".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-    def parse_to_json_serializable(list_obj):
-        list_obj = list(list_obj)
-        for c in list_obj:
-            c['_id'] = str(c['_id'])
-        return list_obj
+    test_or_prod = "prod" if PROD_ENV==True else "test"
+    time_ = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    BACKUP_CLIENTS = f"db/backups/{test_or_prod}_clients_backup_{time_}.json"
+    BACKUP_EVENTS = f"db/backups/{test_or_prod}_events_backup_{time_}.json"
+    BACKUP_CLIENT_CHOICES = f"db/backups/{test_or_prod}_client_choices_backup_{time_}.json"
 
     with open(BACKUP_CLIENTS, 'w') as f:
-        json.dump(parse_to_json_serializable(db[COLLECTION_CLIENTS].find()), f)
+        json.dump(parse_mongo_obj_to_json_serializable(db[COLLECTION_CLIENTS].find()), f)
     with open(BACKUP_EVENTS, 'w') as f:
-        json.dump(parse_to_json_serializable(db[COLLECTION_EVENTS].find()), f)
+        json.dump(parse_mongo_obj_to_json_serializable(db[COLLECTION_EVENTS].find()), f)
     with open(BACKUP_CLIENT_CHOICES, 'w') as f:
-        json.dump(parse_to_json_serializable(db[COLLECTION_CLIENT_CHOICES].find()), f)
+        json.dump(parse_mongo_obj_to_json_serializable(db[COLLECTION_CLIENT_CHOICES].find()), f)
 
 def delete_collections(db):
     # Delete all documents from the clients, events, and client_choices collections
@@ -51,7 +49,7 @@ def import_local_json_online_bdd(db):
 
 
 def import_json_data_to_mongodb_atlas():
-    if not PROD_ENV and 0:
+    if not PROD_ENV:
         # Connect to the MongoDB Atlas cluster
         client, db = get_database()
         # Create backups of the clients, events, and client_choices collections
@@ -62,3 +60,5 @@ def import_json_data_to_mongodb_atlas():
         import_local_json_online_bdd(db)
         # Close the MongoDB Atlas connection
         client.close()
+    else:
+        print(".... not doing shit !!!")

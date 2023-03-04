@@ -1,4 +1,4 @@
-# login_screen.py
+## login_screen.py
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from config import screen_login_str, screen_list_participants_str

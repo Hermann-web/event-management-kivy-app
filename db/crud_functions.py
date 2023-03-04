@@ -1,5 +1,10 @@
-from setup import get_database
+import os
+import json
+from setup import get_database, parse_mongo_obj_to_json_serializable
 from config import COLLECTION_CLIENTS, COLLECTION_CLIENT_CHOICES
+from config import CLIENTS_TEMP_PATH
+
+
 
 def get_clients():
     """
@@ -8,9 +13,18 @@ def get_clients():
     Returns:
     - List of client documents.
     """
-    _, db = get_database()
-    clients = db[COLLECTION_CLIENTS].find()
-    return list(clients)
+    try:
+        with open(CLIENTS_TEMP_PATH) as f: 
+            clients = json.load(f)
+    except Exception as e:
+        print("warning:",e)
+        _, db = get_database()
+        clients = db[COLLECTION_CLIENTS].find()
+        clients = parse_mongo_obj_to_json_serializable(clients)
+        # save to temp
+        with open(CLIENTS_TEMP_PATH, "w") as f: json.dump(clients, f)
+        print(f"...clients data save to ",CLIENTS_TEMP_PATH)
+    return clients
 
 
 def filter_clients(user_input):

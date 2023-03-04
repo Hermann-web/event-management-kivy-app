@@ -1,8 +1,11 @@
-PROD_ENV = True
+import os 
+
+PROD_ENV = False
 
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'
 screen_list_user_events_str = 'list_user_events_screen'
+screen_list_events_str = 'list_events_screen'
 
 # Provide the mongodb atlas url to connect python to mongodb using pymongo
 CONNECTION_STRING = "mongodb+srv://pkaCbXZuJtChwHlaMcbr:Uz51Mew4Y0NmQP0C@cluster0.x4jt5zg.mongodb.net/?retryWrites=true&w=majority"
@@ -22,3 +25,10 @@ RAW_JSON_CLIENT_CHOICES = "db/db_json/client_choices_raw.json"
 COLLECTION_CLIENTS = "clients"
 COLLECTION_EVENTS = "events"
 COLLECTION_CLIENT_CHOICES = "client_choices"
+
+TEMP_FOLDER = "tmp"
+if not os.path.exists(TEMP_FOLDER):
+    print("...creating tmp directory")
+    os.makedirs(TEMP_FOLDER)
+
+CLIENTS_TEMP_PATH = "tmp/clients_tmp.json"
