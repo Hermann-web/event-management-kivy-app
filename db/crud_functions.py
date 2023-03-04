@@ -1,22 +1,5 @@
-from pymongo import MongoClient
-
-def connect_to_database():
-    """
-    Connects to the MongoDB Atlas database and returns a MongoClient object.
-
-    Returns:
-    - MongoClient object.
-    """
-    # Replace the placeholders with your MongoDB Atlas connection string and database name
-    # You can get the connection string from your Atlas dashboard
-    conn_str = 'mongodb+srv://pkaCbXZuJtChwHlaMcbr:Uz51Mew4Y0NmQP0C@cluster0.x4jt5zg.mongodb.net/?retryWrites=true&w=majority'
-    db_name = 'AttendanceDb'
-    
-    client = MongoClient(conn_str)
-    db = client[db_name]
-    
-    return db
-
+from setup import get_database
+from config import COLLECTION_CLIENTS, COLLECTION_CLIENT_CHOICES
 
 def get_clients():
     """
@@ -25,8 +8,8 @@ def get_clients():
     Returns:
     - List of client documents.
     """
-    db = connect_to_database()
-    clients = db.clients.find()
+    _, db = get_database()
+    clients = db[COLLECTION_CLIENTS].find()
     return list(clients)
 
 
@@ -41,7 +24,7 @@ def filter_clients(user_input):
     Returns:
     - List of filtered client documents.
     """
-    db = connect_to_database()
+    _, db = get_database()
     filter_query = {
         '$or': [
             {'firstname': {'$regex': user_input, '$options': 'i'}},
@@ -50,7 +33,7 @@ def filter_clients(user_input):
             {'email': {'$regex': user_input, '$options': 'i'}}
         ]
     }
-    filtered_clients = db.clients.find(filter_query)
+    filtered_clients = db[COLLECTION_CLIENTS].find(filter_query)
     return list(filtered_clients)
 
 
@@ -61,8 +44,8 @@ def get_client_choices():
     Returns:
     - List of client_choice documents.
     """
-    db = connect_to_database()
-    client_choices = db.client_choices.find()
+    _, db = get_database()
+    client_choices = db[COLLECTION_CLIENT_CHOICES].find()
     return list(client_choices)
 
 
@@ -78,7 +61,7 @@ def filter_client_choices(id_client=None, id_event=None):
     Returns:
     - List of filtered client_choice documents.
     """
-    db = connect_to_database()
+    _, db = get_database()
     filter_query = {}
     if id_client:
         filter_query['id_client'] = id_client
@@ -86,9 +69,9 @@ def filter_client_choices(id_client=None, id_event=None):
         filter_query['id_event'] = id_event
     if not filter_query:
         # If no filters are provided, return the full list
-        filtered_choices = db.client_choices.find()
+        filtered_choices = db[COLLECTION_CLIENT_CHOICES].find()
     else:
-        filtered_choices = db.client_choices.find(filter_query)
+        filtered_choices = db[COLLECTION_CLIENT_CHOICES].find(filter_query)
     return list(filtered_choices)
 
 
@@ -102,9 +85,9 @@ def set_present_true(index):
     Returns:
     - The modified client_choice document.
     """
-    db = connect_to_database()
-    choice = db.client_choices.find_one({'index': index})
+    _, db = get_database()
+    choice = db[COLLECTION_CLIENT_CHOICES].find_one({'index': index})
     if choice['is_present'] is None:
         choice['is_present'] = True
-        db.client_choices.replace_one({'index': index}, choice)
+        db[COLLECTION_CLIENT_CHOICES].replace_one({'index': index}, choice)
     return choice

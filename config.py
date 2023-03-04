@@ -1,5 +1,3 @@
-import pymongo
-
 PROD_ENV = True
 
 screen_login_str = 'login_screen'
