@@ -68,7 +68,7 @@
         size_hint: None, None
         size: root.width * 0.8, root.height * 0.8 #dp(300), dp(400)
         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        #padding: dp(10)
+        ## padding: dp(10)
         #spacing: dp(10)
         canvas.before:
             Color:
@@ -95,33 +95,31 @@
                     color: 0, 1, 1, 1
                     pos_hint: {'center_x':0.5, 'center_y':0.5}
             
-            BoxLayout:
-                orientation: "horizontal"
-                size: root.height * 0.5, dp(20)
-                padding: dp(20)
-                Label:
-                    text: "Name:"
-                    size_hint_x: 0.2
-                TextInput:
-                    id: name_input
-                    hint_text: "Enter your name"
-                    size_hint_x: 0.6
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(40)
+            width: dp(root.width * 0.2)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1  # blue color
+                Line:
+                    width: 2
+                    #rectangle: self.x, self.y, self.width, self.height
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            Label:
+                text: "input:"
+                size_hint_x: 0.2
+                
+            TextInput:
+                id: search_input
+                hint_text: "search ..."
+                size_hint_x: 0.4
+                multiline: False
+                on_text_validate: root.search_clients()
+                on_text: root.reset_search_timer()
 
-                Label:
-                    text: "Name:"
-                    size_hint_x: 0.2
-                TextInput:
-                    id: name_input
-                    hint_text: "Enter your name"
-                    size_hint_x: 0.6
-
-                Label:
-                    text: "Name:"
-                    size_hint_x: 0.2
-                TextInput:
-                    id: name_input
-                    hint_text: "Enter your name"
-                    size_hint_x: 0.6
 
         RecycleView:
             rv_layout: layout
@@ -140,7 +138,7 @@
             height: self.minimum_height
             width: dp(root.width * 0.5)
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            padding: dp(5)
+            # padding: dp(5)
             
             MDFloatingActionButton:
                 icon: 'login'

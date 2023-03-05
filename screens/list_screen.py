@@ -14,7 +14,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.list import MDList, TwoLineListItem, ImageLeftWidget
 from kivy.lang import Builder
 #from db.db_json.clients_handler import get_clients
-from db.crud_functions import get_clients
+from db.crud_functions import get_clients, filter_clients
 
 
 
@@ -25,7 +25,7 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
 from config import logging
-
+import threading
 #------------------------------------
 
 class MessageBox(Popup):
@@ -119,6 +119,7 @@ class ListScreen(Screen):
     def __init__(self, **kwargs):
         super(ListScreen, self).__init__(**kwargs)
         self.screen_name = kwargs["name"]
+        self._trigger_search = None
     
     def on_pre_enter(self, *args):
         #self.ids.user_list.clear_widgets()
@@ -127,7 +128,7 @@ class ListScreen(Screen):
                  {'firstname': 'Bob', 'surname': 'Smith', 'cin': '1357908642', 'role': 'Employee', 'firm': 'XYZ Corp'}]'''
         
         # call the get_clients function to retrieve a list of client dictionaries
-        self.users = get_clients()
+        users = get_clients()
         '''for user in users:
             user_item = TwoLineListItem(text=user['firstname'] + " " + user['surname'],
                                         secondary_text=f"[color=0000ff][b]CIN:[/b] {user['cin']}\n"
@@ -137,9 +138,15 @@ class ListScreen(Screen):
                                         #markup=True
                                         )
         '''
-        h = {'idx':'', 'disp': '', 'a':'firstname', 'b':'surname', 'c':'cin', 'd':'role', 'e':'firm'}
-        self.ids.my_list.data = [h] + [{'idx':user["index"], 'disp': self.user_to_str(user), 'a':user['firstname'], 'b':user['surname'], 'c':user['cin'], 'd':user['role'], 'e':user['firm']} for user in self.users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
+        self.add_users_for_recycler_view(users)
 
+        
+
+    def add_users_for_recycler_view(self, users):
+        print("got",[elt['index'] for elt in users])
+        h = {'idx':'', 'disp': '', 'a':'firstname', 'b':'surname', 'c':'cin', 'd':'role', 'e':'firm'}
+        self.ids.my_list.data = [h] + [{'idx':user["index"], 'disp': self.user_to_str(user), 'a':user['firstname'], 'b':user['surname'], 'c':user['cin'], 'd':user['role'], 'e':user['firm']} for user in users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
+        self.add_pointer_focus()
 
     def user_to_str(self, user):
         return f"{user['firstname']} {user['surname']} {user['cin']} \n{user['role']}, {user['firm']}"
@@ -158,3 +165,20 @@ class ListScreen(Screen):
         # You can use the id_event to retrieve the event information from the database.
         print("client_id = ",client_id)
         self.to_user_events_list_screen_(client_id=client_id)
+    
+    def search_clients(self):
+        user_input = self.ids.search_input.text
+        logging.debug(f"user filtering from input: {user_input}")
+        results = filter_clients(user_input)
+        logging.debug(f"nb user filtered: {len(results)}")
+        logging.debug(f"user filtered: {[elt['index'] for elt in results]}")
+        self.add_users_for_recycler_view(results)
+    
+    def add_pointer_focus(self):
+        self.ids.search_input.focus = True
+
+    def reset_search_timer(self):
+        if self._trigger_search:
+            self._trigger_search.cancel()
+        self._trigger_search = threading.Timer(2.0, self.search_clients)
+        self._trigger_search.start()

@@ -1,4 +1,6 @@
 import os 
+import kivy
+import kivymd
 import logging
 
 PROD_ENV = False
@@ -40,6 +42,12 @@ CLIENTS_TEMP_PATH = "tmp/clients_tmp.json"
 
 LOG_FOLDER = "logs"
 if not os.path.exists(LOG_FOLDER):os.makedirs(LOG_FOLDER)
+
+
+# Set the log levels for kivy and kivymd to DEBUG
+# Set the log levels for kivy and kivymd to DEBUG
+logging.getLogger('kivy').setLevel(logging.DEBUG)
+logging.getLogger('kivymd').setLevel(logging.DEBUG)
 
 # Configure the logging module
 logging.basicConfig(level=logging.DEBUG,
