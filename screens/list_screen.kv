@@ -85,11 +85,43 @@
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             padding: dp(20)
             
-            Label:
-                text: 'Participants'
-                font_size: dp(24)
-                color: 0, 1, 1, 1
-                pos_hint: {'center_x':0.5, 'center_y':0.5}
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.height * 0.5, dp(40)
+                Label:
+                    text: 'Participants'
+                    size: root.height * 0.5, dp(20)
+                    font_size: dp(24)
+                    color: 0, 1, 1, 1
+                    pos_hint: {'center_x':0.5, 'center_y':0.5}
+            
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.height * 0.5, dp(20)
+                padding: dp(20)
+                Label:
+                    text: "Name:"
+                    size_hint_x: 0.2
+                TextInput:
+                    id: name_input
+                    hint_text: "Enter your name"
+                    size_hint_x: 0.6
+
+                Label:
+                    text: "Name:"
+                    size_hint_x: 0.2
+                TextInput:
+                    id: name_input
+                    hint_text: "Enter your name"
+                    size_hint_x: 0.6
+
+                Label:
+                    text: "Name:"
+                    size_hint_x: 0.2
+                TextInput:
+                    id: name_input
+                    hint_text: "Enter your name"
+                    size_hint_x: 0.6
 
         RecycleView:
             rv_layout: layout
