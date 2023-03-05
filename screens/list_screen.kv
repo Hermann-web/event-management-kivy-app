@@ -101,6 +101,7 @@
             height: dp(40)
             width: dp(root.width * 0.2)
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: dp(4)
             canvas.before:
                 Color:
                     rgba: 0, 0, 1, 1  # blue color
@@ -119,6 +120,11 @@
                 multiline: False
                 on_text_validate: root.search_clients()
                 on_text: root.reset_search_timer()
+            
+            Label:
+                id: nb_results
+                text: ""
+                size_hint_x: 0.1
 
 
         RecycleView:

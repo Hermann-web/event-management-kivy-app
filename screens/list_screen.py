@@ -147,6 +147,7 @@ class ListScreen(Screen):
         h = {'idx':'', 'disp': '', 'a':'firstname', 'b':'surname', 'c':'cin', 'd':'role', 'e':'firm'}
         self.ids.my_list.data = [h] + [{'idx':user["index"], 'disp': self.user_to_str(user), 'a':user['firstname'], 'b':user['surname'], 'c':user['cin'], 'd':user['role'], 'e':user['firm']} for user in users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
         self.add_pointer_focus()
+        self.ids.nb_results.text = f"{len(users)} results"
 
     def user_to_str(self, user):
         return f"{user['firstname']} {user['surname']} {user['cin']} \n{user['role']}, {user['firm']}"
