@@ -22,36 +22,93 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 #from screens.recycler_view import *
 
+from kivy.uix.boxlayout import BoxLayout
 
+from config import logging
 
 #------------------------------------
+
 class MessageBox(Popup):
+    def __init__(self, **kwargs):
+        kwargs_ = kwargs.copy()
+        del kwargs['id_client']
+        del kwargs['disp_data']
+        del kwargs['screen_root']
+        super(MessageBox, self).__init__(**kwargs)
+        self.id_client = kwargs_['id_client']
+        self.screen_root = kwargs_['screen_root']
+        self.ids.disp_user_data.text = kwargs_['disp_data']
+
     def popup_dismiss(self):
         self.dismiss()
+    def go_to_user_events(self):
+        self.screen_root.view_events(self.id_client)
+        self.dismiss()
+
+    
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
     selected_value = StringProperty('')
     # btn_info = ListProperty(['Button 0 Text', 'Button 1 Text', 'Button 2 Text'])
-class SelectableButton(RecycleDataViewBehavior, Button):
+
+class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
     """ Add selection support to the Label """
     index = None
     
+    a    = StringProperty('')
+    b    = StringProperty('')
+    c     = StringProperty('')
+    d    = StringProperty('')
+    e     = StringProperty('')
+
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
         self.index = index
-        return super(SelectableButton, self).refresh_view_attrs(rv, index, data)
-    def on_press(self):
-        self.root = self.parent.parent.parent.parent
-        self.parent.selected_value = 'Selected: {}'.format(self.text)
-        #self.root.ids.label_message_box.text = self.parent.selected_value
-        self.root.manager.register_data("message_box_text", self.parent.selected_value)
+        return super(MySelectableRows, self).refresh_view_attrs(rv, index, data)
     
-    def on_release(self):
-        MessageBox().open()
-        # self.root = self.parent.parent.parent.parent
-        # selected_value = self.root.selectable_box_layout.selected_value
-        # print(selected_value)
+    def view_events_by_user(self, id_client):
+        self.root = self.parent.parent.parent.parent
+        self.root.view_events(id_client)
 
+    def on_press(self):
+        self.is_header = self.idx ==''
+        logging.debug(f"self.idx = {self.idx} self.is_header = {self.is_header}")
+        if self.is_header: return
+        logging.debug("just pressed it")
+
+        # get data on user
+        self.root = self.parent.parent.parent.parent
+        idx, text, disp = self.idx, self.text, self.disp
+        users = self.root.ids.my_list.data
+        the_row = list(filter(lambda x: x['idx']==idx, users))[0]
+        logging.debug(f"user data: {the_row}")
+
+        # set id_client 
+        self.id_client = idx
+
+        # # handle click to go to anotherpage from the msgbox
+        # logging.info("handle click to go to anotherpage from the msgbox")
+        # fct_view_events_by_user = lambda id_client=self.id_client: self.view_events_by_user(id_client)
+        # self.root.manager.register_data('screen_list_msgbox_view_events_by_user', fct_view_events_by_user)
+
+        # add value so the msgbox can read
+        logging.info("create str to print on popup")
+        self.selected_value = f'Selected: id = {idx} text = {disp}'
+        # logging.info("save the str into register data")
+        # self.root.manager.register_data("message_box_text", self.selected_value)
+
+        '''rv = self.parent.parent
+        my_list_data = rv.data'''
+        
+    def on_release(self):
+        if self.is_header: return
+        screen_root = self.parent.parent.parent.parent
+        msgbox = MessageBox(id_client=self.id_client, 
+                            disp_data=self.selected_value, 
+                            screen_root=screen_root,
+                            #content = Label(text=disp_data), #iwould need to add buttons on it and group all in a layout
+                            title = "rrr")
+        msgbox.open()
 ##-------------------------
 
 
@@ -62,9 +119,7 @@ class ListScreen(Screen):
     def __init__(self, **kwargs):
         super(ListScreen, self).__init__(**kwargs)
         self.screen_name = kwargs["name"]
-        self.ids.my_list.data = [{'text': "Button " + str(x), 'id': str(x)} for x in range(3)]
-        # self.selectable_box_layout = self.ids.my_list.rv_layout
-
+    
     def on_pre_enter(self, *args):
         #self.ids.user_list.clear_widgets()
         '''users = [{'firstname': 'John', 'surname': 'Doe', 'cin': '1234567890', 'role': 'Manager', 'firm': 'ACME Inc.'},
@@ -80,10 +135,11 @@ class ListScreen(Screen):
                                                        f"[color=ff0000][b]Role:[/b][/color] {user['role']}",
                                         on_press=lambda e,client_id=user["index"]: self.view_events(client_id),
                                         #markup=True
-
                                         )
         '''
-        self.ids.my_list.data = [{'text': self.user_to_str(user)} for user in self.users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
+        h = {'idx':'', 'disp': '', 'a':'firstname', 'b':'surname', 'c':'cin', 'd':'role', 'e':'firm'}
+        self.ids.my_list.data = [h] + [{'idx':user["index"], 'disp': self.user_to_str(user), 'a':user['firstname'], 'b':user['surname'], 'c':user['cin'], 'd':user['role'], 'e':user['firm']} for user in self.users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
+
 
     def user_to_str(self, user):
         return f"{user['firstname']} {user['surname']} {user['cin']} \n{user['role']}, {user['firm']}"

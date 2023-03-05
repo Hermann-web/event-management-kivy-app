@@ -5,13 +5,23 @@
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: app.sm.get_register_data('message_box_text')
+            id: disp_user_data
+            #text: root.disp_data 
+            #text: app.sm.get_register_data('message_box_text')
+            #text: root.get_text_label()
         Button:
             size_hint: 1, 0.2
             text: 'OK'
             on_press:
                 root.dismiss()
-
+        Button:
+            size_hint: 1, 0.2
+            text: 'GO TO ATTENDANCE'
+            on_press:
+                #fct = app.sm.get_register_data('screen_list_msgbox_view_events_by_user')
+                #fct()
+                root.go_to_user_events()
+                
 <SelectableButton>
     # Draw a background to indicate selection
     canvas.before:
@@ -20,6 +30,37 @@
         Rectangle:
             pos: self.pos
             size: app.root.width * 0.8, self.size[1]
+<MySelectableRows>
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (0.0, 0.9, 0, 0.8)
+        Rectangle:
+            pos: self.pos
+            size: app.root.width * 0.8, self.size[1]
+    #orientation: 'horizontal'
+    #size_hint: 1.0, 1.0
+
+    Label:
+        text: root.a
+        size_hint_x : 0.5
+
+    Label:
+        text: root.b
+        size_hint_x : 0.5
+
+    Label:
+        text: root.c
+        size_hint_x : 0.5
+
+    Label:
+        text: root.d
+        size_hint_x : 0.5
+
+    Label:
+        text:  root.e
+        size_hint_x : 0.5
+
 <ListScreen>
 
     BoxLayout:
@@ -53,7 +94,7 @@
         RecycleView:
             rv_layout: layout
             id: my_list
-            viewclass: 'SelectableButton'
+            viewclass: 'MySelectableRows'
             SelectableRecycleBoxLayout:
                 id: layout
                 default_size: None, dp(56)
