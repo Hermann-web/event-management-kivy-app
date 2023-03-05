@@ -1,17 +1,102 @@
+import re
+from unidecode import unidecode
 from config import ONLINE 
 from config import logging
 
 if ONLINE:
     logging.info("ONLINE = {ONLINE}. working with online db")
     from db.crud_functions_online import (
-        get_clients, filter_clients, get_client_choices, 
-        filter_client_choices, filter_client_choices_from_text_input,
-        set_present_true
+        get_clients, get_events,
+        get_client_choices, set_present_true
         )
 else:
     logging.info("ONLINE = {ONLINE}. working with local db")
     from db.db_json.clients_handler import (
-        get_clients, filter_clients, get_client_choices, 
-        filter_client_choices, filter_client_choices_from_text_input,
-        set_present_true
+        get_clients, get_events,
+        get_client_choices, set_present_true
         )
+
+def filter_json_from_text(json_data, text_input):
+    """
+    Filters documents in the json_data dictionary based on the provided text_input.
+    If text_input is None, returns the full list.
+
+    Parameters:
+    - json_data (list[dict]): Dictionary containing documents.
+    - text_input (str): Text input containing fields to filter by. Fields should be separated by spaces.
+
+    Returns:
+    - List of filtered documents.
+    """
+    
+    keys = []
+
+    if text_input:
+        # Preprocess text input by removing diacritics and unwanted characters
+        text_input = unidecode(text_input.lower())
+        text_input = re.sub(r'[^\w\s]', '', text_input)
+        text_input = re.sub(r'\s+', ' ', text_input)
+
+        # Split text input into fields and construct filter query
+        keys = [key.strip().lower() for key in text_input.split(' ')]
+        keys = list(filter(lambda x: len(x)>2, keys))
+
+
+    if not keys:
+        # If no filters are provided, return the full list
+        filtered_choices = list(json_data)
+    else:
+        print(f"keys: {keys}")
+        filter_ = [(j,sum([int(key in "-".join(list(map(str,doc.values()))).lower()) for key in keys])) for j,doc in enumerate(json_data) ]
+        print("1",filter_)
+        filtered_choices =  [json_data[i] for i in map(lambda x: x[0], sorted(filter(lambda x: x[1]!=0, filter_), key=lambda x:x[1], reverse=True))]
+
+    return filtered_choices
+
+
+def filter_clients(text_input):
+    """
+    Filters client documents in the json_data dictionary based on the provided text_input.
+    If text_input is None, returns the full list.
+
+    Parameters:
+    - json_data (list[dict]): Dictionary containing client documents.
+    - text_input (str): Text input containing fields to filter by. Fields should be separated by spaces.
+
+    Returns:
+    - List of filtered client documents.
+    """
+    json_data = get_clients()
+    return filter_json_from_text(json_data, text_input)
+
+def filter_event_from_text_input(text_input):
+    """
+    Filters client_choice documents in the json_data dictionary based on the provided text_input.
+    If text_input is None, returns the full list.
+
+    Parameters:
+    - json_data (dict): Dictionary containing client_choice documents.
+    - text_input (str): Text input containing fields to filter by. Fields should be separated by spaces.
+
+    Returns:
+    - List of filtered client_choice documents.
+    """
+    json_data = get_events()
+    return filter_json_from_text(json_data, text_input)
+ 
+
+
+def filter_client_choices_from_text_input(text_input):
+    """
+    Filters client_choice documents in the json_data dictionary based on the provided text_input.
+    If text_input is None, returns the full list.
+
+    Parameters:
+    - json_data (dict): Dictionary containing client_choice documents.
+    - text_input (str): Text input containing fields to filter by. Fields should be separated by spaces.
+
+    Returns:
+    - List of filtered client_choice documents.
+    """
+    json_data = get_client_choices()
+    return filter_json_from_text(json_data, text_input)

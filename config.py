@@ -5,7 +5,7 @@ import logging
 
 PROD_ENV = False
 DEBUG = True
-ONLINE = False
+ONLINE = True
 
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'
@@ -37,6 +37,7 @@ COLLECTION_CLIENT_CHOICES = "client_choices"
 TEMP_FOLDER = "tmp"
 if not os.path.exists(TEMP_FOLDER):os.makedirs(TEMP_FOLDER)
 CLIENTS_TEMP_PATH = "tmp/clients_tmp.json"
+EVENTS_TEMP_PATH = "tmp/events_tmp.json"
 
 
 
