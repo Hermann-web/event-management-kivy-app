@@ -3,6 +3,7 @@ import logging
 
 PROD_ENV = False
 DEBUG = True
+ONLINE = False
 
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'

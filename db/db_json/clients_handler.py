@@ -1,8 +1,5 @@
 import json
-
-JSON_CLIENTS = "db_json\clients.json"
-JSON_EVENTS = "db_json\events.json"
-JSON_CLIENT_CHOICES = "db_json\client_choices.json"
+from config import JSON_CLIENTS, JSON_EVENTS, JSON_CLIENT_CHOICES
 
 def get_clients():
     """

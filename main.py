@@ -20,6 +20,10 @@ from config import DEBUG
 #kivy_deps.angle_backend.ensure_surface_initialized()
 
 class RootScreenManager(ScreenManager):
+    def __init__(self, **kwargs):
+        super(RootScreenManager, self).__init__(**kwargs)
+        self._app_data_ = {}
+
     def switch_screen(self, screen_name, current, **kwargs):
         try:
             if current == screen_login_str:
@@ -84,6 +88,13 @@ class RootScreenManager(ScreenManager):
         error_message = "An error occurred. Please try again later."
         if DEBUG: error_message += "\n" + detail_
         self.show_popup(error_message)
+    
+    def register_data(self, id, data):
+        self._app_data_[id] = data
+        logging.debug(f"register id = {id} data = {data}")
+
+    def get_register_data(self, id):
+        return self._app_data_[id]
 
 
 class UserListApp(MDApp):
