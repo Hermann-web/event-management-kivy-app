@@ -51,7 +51,7 @@ def save_client_choices(client_choices):
     with open(JSON_CLIENT_CHOICES, 'w') as f:
         json.dump(client_choices, f, indent=4)
 
-def filter_client_choices(id_client=None, id_event=None):
+def filter_client_choices(id_client=None, id_event=None, day=None, hour=None):
     """
     Filters a list of client_choices dictionaries based on the provided id_client and/or id_event.
     If neither id_client nor id_event are provided, returns the full list.
@@ -64,16 +64,20 @@ def filter_client_choices(id_client=None, id_event=None):
     - List of filtered client_choices dictionaries.
     """
     client_choices = get_client_choices()
-    if not id_client and not id_event:
+    if not id_client and not id_event and not day and not hour:
         # If no filters are provided, return the full list
         return client_choices
 
     filtered_choices = []
 
     for choice in client_choices:
-        if id_client and choice['id_client'] != id_client:
+        if id_client and choice['id_client'] not in id_client:
             continue
-        if id_event and choice['id_event'] != id_event:
+        if id_event and choice['id_event'] not in id_event:
+            continue
+        if day and choice['day'] not in day:
+            continue
+        if hour and choice['hour'] not in hour:
             continue
         filtered_choices.append(choice)
 
