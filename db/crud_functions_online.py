@@ -13,7 +13,7 @@ def fetch_data_online(collection_name, filters):
         rows = db[collection_name].find(filters)
     else:
         rows = db[collection_name].find()
-    return rows
+    return list(rows)
 
 def save_to_temp(collection_name, rows, temp_path):
     # save temp
@@ -72,7 +72,7 @@ def fetch_all_data(collection_name, temp_path=None, filters=None):
     if filters:
         rows = filter(lambda row:all([row[key]==filters[key] for key in filters]), rows)
     
-    return rows
+    return list(rows)
 
 
 
@@ -84,7 +84,7 @@ def get_clients(filters=None):
     Returns:
     - List of client documents.
     """
-    return fetch_all_data(collection_name=COLLECTION_CLIENTS, temp_path=CLIENTS_TEMP_PATH, filters=filters)
+    return list(fetch_all_data(collection_name=COLLECTION_CLIENTS, temp_path=CLIENTS_TEMP_PATH, filters=filters))
 
 def get_events(filters=None):
     """
@@ -93,7 +93,7 @@ def get_events(filters=None):
     Returns:
     - List of event documents.
     """
-    return fetch_all_data(collection_name=COLLECTION_EVENTS, temp_path=EVENTS_TEMP_PATH, filters=filters)
+    return list(fetch_all_data(collection_name=COLLECTION_EVENTS, temp_path=EVENTS_TEMP_PATH, filters=filters))
 
 def get_client_choices(filters=None):
     """
@@ -102,7 +102,7 @@ def get_client_choices(filters=None):
     Returns:
     - List of client_choice documents.
     """
-    return fetch_all_data(collection_name=COLLECTION_CLIENT_CHOICES, temp_path=None, filters=filters)
+    return list(fetch_all_data(collection_name=COLLECTION_CLIENT_CHOICES, temp_path=None, filters=filters))
 
 
 

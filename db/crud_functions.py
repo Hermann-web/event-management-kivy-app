@@ -28,7 +28,8 @@ def filter_client_choices(id_client=None, id_event=None, day=None, hour=None):
     Returns:
     - List of filtered client_choice documents.
     """
-    return get_client_choices(filters={'id_client':id_client, 'id_event':id_event, 'day':day, 'hour':hour})
+    results = get_client_choices(filters={'id_client':id_client, 'id_event':id_event, 'day':day, 'hour':hour})
+    return list(results)
 
 @catch_exceptions
 def filter_json_from_text(json_data, text_input):
@@ -66,7 +67,7 @@ def filter_json_from_text(json_data, text_input):
         print("1",filter_)
         filtered_choices =  [json_data[i] for i in map(lambda x: x[0], sorted(filter(lambda x: x[1]!=0, filter_), key=lambda x:x[1], reverse=True))]
 
-    return filtered_choices
+    return list(filtered_choices)
 
 @catch_exceptions
 def filter_clients_from_text_input(text_input:str=None, filters:dict=None):
@@ -82,8 +83,8 @@ def filter_clients_from_text_input(text_input:str=None, filters:dict=None):
     - List of filtered client documents.
     """
     json_data = get_clients(filters=filters)
-    return filter_json_from_text(json_data, text_input) if text_input else json_data
-
+    results = filter_json_from_text(json_data, text_input) if text_input else json_data
+    return list(results)
 @catch_exceptions
 def filter_event_from_text_input(text_input:str=None, filters:dict=None):
     """
@@ -98,7 +99,8 @@ def filter_event_from_text_input(text_input:str=None, filters:dict=None):
     - List of filtered client_choice documents.
     """
     json_data = get_events(filters=filters)
-    return filter_json_from_text(json_data, text_input) if text_input else json_data
+    results = filter_json_from_text(json_data, text_input) if text_input else json_data
+    return list(results)
 
 @catch_exceptions
 def filter_client_choices_from_text_input(text_input:str=None, filters:dict=None):
@@ -114,4 +116,5 @@ def filter_client_choices_from_text_input(text_input:str=None, filters:dict=None
     - List of filtered client_choice documents.
     """
     json_data = get_client_choices(filters=filters)
-    return filter_json_from_text(json_data, text_input) if text_input else json_data
+    results = filter_json_from_text(json_data, text_input) if text_input else json_data
+    return list(results)
