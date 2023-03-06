@@ -44,14 +44,14 @@ EVENTS_TEMP_PATH = "tmp/events_tmp.json"
 LOG_FOLDER = "logs"
 if not os.path.exists(LOG_FOLDER):os.makedirs(LOG_FOLDER)
 
-
+LOGGING_LEVEL = logging.DEBUG
 # Set the log levels for kivy and kivymd to DEBUG
 # Set the log levels for kivy and kivymd to DEBUG
-logging.getLogger('kivy').setLevel(logging.DEBUG)
-logging.getLogger('kivymd').setLevel(logging.DEBUG)
+logging.getLogger('kivy').setLevel(LOGGING_LEVEL)
+logging.getLogger('kivymd').setLevel(LOGGING_LEVEL)
 
 # Configure the logging module
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=LOGGING_LEVEL,
                     format='%(asctime)s [%(levelname)s] %(message)s',
                     handlers=[logging.FileHandler(f'{LOG_FOLDER}/myapp.log')])
 
