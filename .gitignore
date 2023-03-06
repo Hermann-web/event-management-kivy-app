@@ -1,6 +1,7 @@
 doc/
 logs/
 .vscode/
+db/backups/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
