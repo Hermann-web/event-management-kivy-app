@@ -1,10 +1,67 @@
-<ListUserEventsScreen>:
+<AttendanceMessageBox>
+    title: 'Popup Message Box'
+    size_hint: None, None
+    size: 400, 400
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id: disp_user_data
+            #text: root.disp_data 
+            #text: app.sm.get_register_data('message_box_text')
+            #text: root.get_text_label()
+        Button:
+            size_hint: 1, 0.2
+            text: 'OK'
+            on_press:
+                root.dismiss()
+        Button:
+            size_hint: 1, 0.2
+            text: 'ADMIT ATTENDANCE'
+            on_press:
+                #fct = app.sm.get_register_data('screen_list_msgbox_view_events_by_user')
+                #fct()
+                root.admit_attendance()
+                
+
+<AttendanceMySelectableRows>
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (0.0, 0.9, 0, 0.8)
+        Rectangle:
+            pos: self.pos
+            size: app.root.width * 0.8, self.size[1]
+    #orientation: 'horizontal'
+    #size_hint: 1.0, 1.0
+
+    Label:
+        text: root.a
+        size_hint_x : 0.5
+
+    Label:
+        text: root.b
+        size_hint_x : 0.5
+
+    Label:
+        text: root.c
+        size_hint_x : 0.5
+
+    Label:
+        text: root.d
+        size_hint_x : 0.5
+
+    Label:
+        text:  root.e
+        size_hint_x : 0.5
+
+<ListUserEventsScreen>
+
     BoxLayout:
         orientation: 'vertical'
         size_hint: None, None
         size: root.width * 0.8, root.height * 0.8 #dp(300), dp(400)
         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        #padding: dp(10)
+        ## padding: dp(10)
         #spacing: dp(10)
         canvas.before:
             Color:
@@ -19,19 +76,60 @@
             height: self.minimum_height
             width: dp(root.width * 0.8)
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            #padding: dp(100)
+            padding: dp(20)
+            
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.height * 0.5, dp(40)
+                Label:
+                    text: 'Attendance'
+                    size: root.height * 0.5, dp(20)
+                    font_size: dp(24)
+                    color: 0, 1, 1, 1
+                    pos_hint: {'center_x':0.5, 'center_y':0.5}
+            
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(40)
+            width: dp(root.width * 0.2)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: dp(4)
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1  # blue color
+                Line:
+                    width: 2
+                    #rectangle: self.x, self.y, self.width, self.height
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            Label:
+                text: "input:"
+                size_hint_x: 0.2
+                
+            TextInput:
+                id: search_input2
+                hint_text: "search ..."
+                size_hint_x: 0.4
+                multiline: False
+                on_text_validate: root.search_()
+                on_text: root.reset_search_timer()
             
             Label:
-                text: 'Events'
-                font_size: dp(24)
-                color: 0, 1, 1, 1
-                pos_hint: {'center_x':0.5, 'center_y':0.5}
+                id: nb_results2
+                text: ""
+                size_hint_x: 0.1
 
-        ScrollView:
-            MDList:
-                id: user_event_list
-                theme_text_color: "Custom"
-                text_color: 1, 1, 1, 1
+        RecycleView:
+            rv_layout: layout
+            id: my_list
+            viewclass: 'MySelectableRows'
+            SelectableRecycleBoxLayout:
+                id: layout
+                default_size: None, dp(56)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: "vertical"
 
         BoxLayout:
             orientation: 'horizontal'
@@ -39,11 +137,16 @@
             height: self.minimum_height
             width: dp(root.width * 0.5)
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            padding: dp(5)
+            # padding: dp(5)
+            
+            MDFloatingActionButton:
+                icon: 'login'
+                md_bg_color: app.theme_cls.primary_color
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_press: app.to_login_screen(root.screen_name) #root. for ListScreen(list_screen.py), app. for UserListApp(main.py)
 
             MDFloatingActionButton:
                 icon: 'account-multiple'
                 md_bg_color: app.theme_cls.accent_color
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 on_press: app.to_users_list_screen(root.screen_name)
-            

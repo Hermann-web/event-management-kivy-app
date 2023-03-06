@@ -20,8 +20,6 @@ from db.crud_functions import get_clients, filter_clients_from_text_input
 
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-#from screens.recycler_view import *
-
 from kivy.uix.boxlayout import BoxLayout
 
 from config import logging
@@ -48,7 +46,7 @@ class MessageBox(Popup):
         self.screen_root.view_events(self.id_client)
         self.dismiss()
 
-    
+
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
     selected_value = StringProperty('')
@@ -154,12 +152,12 @@ class ListScreen(Screen):
     def add_users_for_recycler_view(self, users):
         logging.debug(f"users index: got {[elt['index'] for elt in users]}")
         h = {'idx':'', 'disp': '', 'a':'firstname', 'b':'surname', 'c':'cin', 'd':'role', 'e':'firm'}
-        self.ids.my_list.data = [h] + [{'idx':user["index"], 'disp': self.user_to_str(user), 'a':user['firstname'], 'b':user['surname'], 'c':user['cin'], 'd':user['role'], 'e':user['firm']} for user in users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
+        self.ids.my_list.data = [h] + [{'idx':user["index"], 'disp': self.row_to_str(user), 'a':user['firstname'], 'b':user['surname'], 'c':user['cin'], 'd':user['role'], 'e':user['firm']} for user in users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
         self.add_pointer_focus()
         self.ids.nb_results.text = f"{len(users)} results"
 
     @catch_exceptions
-    def user_to_str(self, user):
+    def row_to_str(self, user):
         text = ""
         for key,val in user.items():
             if key in ["id","index","id_","_id"]: continue
@@ -192,7 +190,7 @@ class ListScreen(Screen):
         self.add_users_for_recycler_view(results)
     
     def add_pointer_focus(self):
-        self.ids.search_input.focus = True
+        self.ids.search_input2.focus = True
 
     @catch_exceptions
     def reset_search_timer(self):
