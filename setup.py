@@ -3,18 +3,15 @@
 __author__      = "Hermann Agossou"
 
 from pymongo import MongoClient, errors #do not remove (errors is used elsewhere)
-from config import PROD_ENV
+from config import PROD_ENV, ONLINE
 from config import CONNECTION_STRING, DATABASE_NAME
 from config import logging 
 
-logging.info(f"...PROD_ENV is set to {PROD_ENV}")
+logging.info(f"...PROD_ENV: is set to {PROD_ENV}")
 logging.info(f"...DATABASE_NAME: {DATABASE_NAME}")
+logging.info(f"...ONLINE: is set to {ONLINE}")
 
-def parse_mongo_obj_to_json_serializable(list_obj):
-    list_obj = list(list_obj)
-    for c in list_obj:
-        c['_id'] = str(c['_id'])
-    return list_obj
+
 
 def get_database():
     logging.info(f"database call: {DATABASE_NAME}")
