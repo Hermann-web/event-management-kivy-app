@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from setup import parse_mongo_obj_to_json_serializable, get_database
+from utils import parse_mongo_obj_to_json_serializable, get_database
 from config import PROD_ENV
 from config import JSON_CLIENTS,JSON_EVENTS,JSON_CLIENT_CHOICES
 # colections names

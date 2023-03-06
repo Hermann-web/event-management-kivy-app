@@ -2,9 +2,9 @@ import unittest
 import json
 from clients_handler import (
     get_clients,
-    filter_clients, 
+    filter_clients_from_text_input, 
     get_client_choices, 
-    filter_client_choices, 
+    filter_client_choices_from_text_input, 
     set_present_true
 )
 
@@ -35,8 +35,8 @@ class TestFunctions(unittest.TestCase):
         ]
         self.assertEqual(result, expected)
 
-    def test_filter_clients(self):
-        result = filter_clients("ABC")
+    def test_filter_clients_from_text_input(self):
+        result = filter_clients_from_text_input("ABC")
         expected = [
             {
                 "index": 1,

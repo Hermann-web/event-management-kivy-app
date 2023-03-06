@@ -1,5 +1,6 @@
 # main.py
 from config import logging
+import traceback 
 
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
@@ -14,6 +15,7 @@ from config import (
     screen_list_user_events_str, screen_list_events_str
 )
 from config import DEBUG
+from utils import log_exception
 
 # for pyinstaller #to make sure the graphic backend is initialized properly
 #import kivy_deps
@@ -83,12 +85,11 @@ class RootScreenManager(ScreenManager):
         popup.open()
 
     def display_error_message(self, err, action):
-        detail_ = f"--> {action}\n err:{err}"
-        logging.error(detail_)
         error_message = "An error occurred. Please try again later."
-        if DEBUG: error_message += "\n" + detail_
+        if DEBUG: error_message += f"\n--> {action}\n err:{err}"
         self.show_popup(error_message)
-    
+        log_exception(err, action)
+
     def register_data(self, id, data):
         self._app_data_[id] = data
         logging.debug(f"register id = {id} data = {data}")

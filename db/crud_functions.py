@@ -2,6 +2,7 @@ import re
 from unidecode import unidecode
 from config import ONLINE 
 from config import logging
+from utils import catch_exceptions
 
 if ONLINE:
     logging.info("ONLINE = {ONLINE}. working with online db")
@@ -11,11 +12,25 @@ if ONLINE:
         )
 else:
     logging.info("ONLINE = {ONLINE}. working with local db")
-    from db.db_json.clients_handler import (
+    from db.crud_functions_offline import (
         get_clients, get_events,
         get_client_choices, set_present_true
         )
 
+@catch_exceptions
+def filter_client_choices(id_client=None, id_event=None, day=None, hour=None):
+    """
+    Filters client_choice documents in the client_choices collection based on the provided id_client and/or id_event.
+    If neither id_client nor id_event are provided, returns the full list.
+    Parameters:
+    - id_client (int, optional): ID of the client to filter by.
+    - id_event (int, optional): ID of the event to filter by.
+    Returns:
+    - List of filtered client_choice documents.
+    """
+    return get_client_choices(filters={'id_client':id_client, 'id_event':id_event, 'day':day, 'hour':hour})
+
+@catch_exceptions
 def filter_json_from_text(json_data, text_input):
     """
     Filters documents in the json_data dictionary based on the provided text_input.
@@ -39,7 +54,7 @@ def filter_json_from_text(json_data, text_input):
 
         # Split text input into fields and construct filter query
         keys = [key.strip().lower() for key in text_input.split(' ')]
-        keys = list(filter(lambda x: len(x)>2, keys))
+        #keys = list(filter(lambda x: len(x)>2, keys))
 
 
     if not keys:
@@ -53,8 +68,8 @@ def filter_json_from_text(json_data, text_input):
 
     return filtered_choices
 
-
-def filter_clients(text_input):
+@catch_exceptions
+def filter_clients_from_text_input(text_input:str=None, filters:dict=None):
     """
     Filters client documents in the json_data dictionary based on the provided text_input.
     If text_input is None, returns the full list.
@@ -66,10 +81,11 @@ def filter_clients(text_input):
     Returns:
     - List of filtered client documents.
     """
-    json_data = get_clients()
-    return filter_json_from_text(json_data, text_input)
+    json_data = get_clients(filters=filters)
+    return filter_json_from_text(json_data, text_input) if text_input else json_data
 
-def filter_event_from_text_input(text_input):
+@catch_exceptions
+def filter_event_from_text_input(text_input:str=None, filters:dict=None):
     """
     Filters client_choice documents in the json_data dictionary based on the provided text_input.
     If text_input is None, returns the full list.
@@ -81,12 +97,11 @@ def filter_event_from_text_input(text_input):
     Returns:
     - List of filtered client_choice documents.
     """
-    json_data = get_events()
-    return filter_json_from_text(json_data, text_input)
- 
+    json_data = get_events(filters=filters)
+    return filter_json_from_text(json_data, text_input) if text_input else json_data
 
-
-def filter_client_choices_from_text_input(text_input):
+@catch_exceptions
+def filter_client_choices_from_text_input(text_input:str=None, filters:dict=None):
     """
     Filters client_choice documents in the json_data dictionary based on the provided text_input.
     If text_input is None, returns the full list.
@@ -98,5 +113,5 @@ def filter_client_choices_from_text_input(text_input):
     Returns:
     - List of filtered client_choice documents.
     """
-    json_data = get_client_choices()
-    return filter_json_from_text(json_data, text_input)
+    json_data = get_client_choices(filters=filters)
+    return filter_json_from_text(json_data, text_input) if text_input else json_data
