@@ -25,6 +25,7 @@ def save_to_temp(collection_name, rows, temp_path):
     except Exception as e:
         logging.error(f"error when trying to save in temp, collection {collection_name}. e:{e}")
     
+@catch_exceptions
 def fetch_all_data(collection_name, temp_path=None, filters=None):
     """
     Retrieves a list of  documents from the  collection in the database.
@@ -105,7 +106,7 @@ def get_client_choices(filters=None):
     return list(fetch_all_data(collection_name=COLLECTION_CLIENT_CHOICES, temp_path=None, filters=filters))
 
 
-
+@catch_exceptions
 def set_present_true(index):
     """
     Sets the 'is_present' field of a client_choice document to True if it is not already set.

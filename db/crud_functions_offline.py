@@ -75,8 +75,8 @@ def save_client_choices(client_choices):
     with open(JSON_CLIENT_CHOICES, 'w') as f:
         json.dump(client_choices, f, indent=4)
 
-
-def set_present_true(index, force_null_test=False):
+@catch_exceptions
+def set_present_true(index):
     """
     Sets the 'is_present' value of a client_choice dictionary to True if it is not already set.
 
@@ -94,13 +94,6 @@ def set_present_true(index, force_null_test=False):
         choice['is_present'] = True
         client_choices[row_number] = choice
         save_client_choices(client_choices)
-        return choice
-    elif force_null_test==True:
-        choice['is_present'] = None
-        client_choices[row_number] = choice
-        save_client_choices(client_choices)
-        return choice
-    else:
-        return choice
+    return choice
     
     
