@@ -2,6 +2,8 @@ doc/
 logs/
 .vscode/
 db/backups/
+share/
+pkg/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
