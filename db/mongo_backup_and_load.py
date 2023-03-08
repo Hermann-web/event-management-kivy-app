@@ -1,10 +1,10 @@
 import json
 from datetime import datetime
 from utils import parse_mongo_obj_to_json_serializable, get_database
-from config import PROD_ENV
-from config import JSON_CLIENTS,JSON_EVENTS,JSON_CLIENT_CHOICES
+from config.config import PROD_ENV
+from config.config import JSON_CLIENTS,JSON_EVENTS,JSON_CLIENT_CHOICES
 # colections names
-from config import COLLECTION_CLIENTS,COLLECTION_EVENTS,COLLECTION_CLIENT_CHOICES
+from config.config import COLLECTION_CLIENTS,COLLECTION_EVENTS,COLLECTION_CLIENT_CHOICES
 
 
 def create_backups(db):

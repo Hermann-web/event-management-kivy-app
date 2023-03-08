@@ -1,6 +1,4 @@
-from kivy.app import App
-from kivy.uix.recycleview import RecycleView
-from kivy.uix.recycleview.views import RecycleDataViewBehavior
+
 from kivy.uix.button import Button
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
@@ -17,20 +15,23 @@ from kivy.lang import Builder
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import BooleanProperty
 
 from db.crud_functions import filter_client_choices_from_text_input
 from db.crud_functions import set_present_true
-from config import logging
+from config.config import logging
 import threading
-from utils import catch_exceptions
+from utils import catch_exceptions, log_exception
 
-Builder.load_file(__file__[:-2]+"kv")
+#Builder.load_file(__file__[:-2]+"kv")
+Builder.load_file('.'.join(__file__.split('.')[:-1])+".kv")
+#Builder.load_file("./screens/list_user_events.kv")
 
 
 class AttendanceMessageBox(Popup):
     def __init__(self, **kwargs):
         kwargs_ = kwargs.copy()
-        del kwargs['id_client']
+        del kwargs['id_main']
         del kwargs['disp_data']
         del kwargs['screen_root']
         super(AttendanceMessageBox, self).__init__(**kwargs)
@@ -52,13 +53,14 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, Recycle
     selected_value = StringProperty('')
     # btn_info = ListProperty(['Button 0 Text', 'Button 1 Text', 'Button 2 Text'])
 
-class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
+class AttendanceMySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
     """ Add selection support to the Label """
     index = None
+    icon_path = ""
     
     a    = StringProperty('')
     b    = StringProperty('')
-    c     = StringProperty('')
+    c     = BooleanProperty(False)
     d    = StringProperty('')
     e     = StringProperty('')
 
@@ -66,7 +68,8 @@ class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
         self.index = index
-        return super(MySelectableRows, self).refresh_view_attrs(rv, index, data)
+        #self.icon_path = data['icon_path']
+        return super(AttendanceMySelectableRows, self).refresh_view_attrs(rv, index, data)
     
     @catch_exceptions
     def view_events_by_user(self, id_client):
@@ -132,13 +135,16 @@ class ListUserEventsScreen(Screen):
         self.filters = {'id_client':client_id, 'id_event':event_id, 'day':day, 'hour':hour}
         self.add_rows_for_recycler_view()
 
+    def row_screen_dict(self, row:dict):
+        return {'idx':row["index"], 'disp': self.row_to_str(row), 'a':str(row['id_event']), 'b':str(row['id_client']), 'c':bool(row['is_present']), 'd':str(row['time_presence']), 'e':''}
     @catch_exceptions
-    def add_rows_for_recycler_view(self):
-        rows = filter_client_choices_from_text_input(filters=self.filters)
+    def add_rows_for_recycler_view(self, user_input=None):
+        rows = filter_client_choices_from_text_input(filters=self.filters, text_input=user_input)
         logging.debug(f"nb user filtered: {len(rows)}")
         logging.debug(f"rows index: got {[elt['index'] for elt in rows]}")
-        h = {'idx':'', 'disp': '', 'a':'id_event', 'b':'id_client', 'c':'is_present', 'd':'time_presence', 'e':''}
-        self.ids.my_list.data = [h] + [{'idx':row["index"], 'disp': self.row_to_str(row), 'a':str(row['id_event']), 'b':str(row['id_client']), 'c':str(row['is_present']), 'd':str(row['time_presence']), 'e':''} for row in rows] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
+        h = {'idx':'', 'disp': '', 'a':'id_event', 'b':'id_client', 
+             'c':'is_present', 'd':'time_presence', 'e':''}
+        self.ids.my_list.data = [h] + [self.row_screen_dict(row) for row in rows] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
         self.add_pointer_focus()
         self.ids.nb_results2.text = f"{len(rows)} results"
 
@@ -160,26 +166,36 @@ class ListUserEventsScreen(Screen):
     def to_user_events_list_screen_(self, client_id):
         self.manager.to_user_events_list_screen(self.screen_name, client_id=client_id)
 
+    @catch_exceptions
+    def update_row(self, index, updated_row):
+        for i in range(len(self.ids.my_list.data)):
+            if self.ids.my_list.data[i]['idx'] == index:
+                logging.info(f"updating row in interface idx={index} row={updated_row}")
+                self.ids.my_list.data[i] = self.row_screen_dict(updated_row)
+                return
+        log_exception(f"row with idx={index} not found", f"updating row in interface idx={index} row={updated_row}")
+
     def admit_attendance(self, id_attendance):
         # Here, you can retrieve the events for the given client_id and display them in the user_events screen.
         # You can use the id_event to retrieve the event information from the database.
         print("id_attendance = ",id_attendance)
-        set_present_true(id_attendance)
+        updated_row = set_present_true(id_attendance)
+        self.update_row(id_attendance, updated_row)
     
     @catch_exceptions
     def search_(self):
         user_input = self.ids.search_input2.text
         logging.debug(f"user filtering from input: {user_input}")
-        self.add_rows_for_recycler_view()
+        self.add_rows_for_recycler_view(user_input=user_input)
     
     def add_pointer_focus(self):
-        self.ids.search_input.focus = True
+        self.ids.search_input2.focus = True
 
     @catch_exceptions
     def reset_search_timer(self):
         if self._trigger_search:
             self._trigger_search.cancel()
-        self._trigger_search = threading.Timer(2.0, self.search_clients)
+        self._trigger_search = threading.Timer(2.0, self.search_)
         self._trigger_search.start()
 
     

@@ -2,10 +2,10 @@ import os
 import json
 from setup import get_database
 from utils import parse_mongo_obj_to_json_serializable
-from config import COLLECTION_CLIENTS, COLLECTION_CLIENT_CHOICES, COLLECTION_EVENTS
-from config import CLIENTS_TEMP_PATH, EVENTS_TEMP_PATH
-from config import logging
-
+from config.config import COLLECTION_CLIENTS, COLLECTION_CLIENT_CHOICES, COLLECTION_EVENTS
+from config.config import CLIENTS_TEMP_PATH, EVENTS_TEMP_PATH
+from config.config import logging
+from db.utils import get_present_time
 
 def fetch_data_online(collection_name, filters):
     _, db = get_database()
@@ -43,6 +43,7 @@ def fetch_all_data(collection_name, temp_path=None, filters=None):
     
     # create temp folder is not exist
     tmp_dir = os.path.normpath(os.path.join(temp_path,".."))
+    
     if not os.path.exists(tmp_dir):
         logging.critical(f"temp_path {temp_path}: his folder does not exists. If It is a static table, it is better to save in temp in storage is not a problem")
         try:
@@ -106,6 +107,7 @@ def get_client_choices(filters=None):
     return list(fetch_all_data(collection_name=COLLECTION_CLIENT_CHOICES, temp_path=None, filters=filters))
 
 
+
 @catch_exceptions
 def set_present_true(index):
     """
@@ -119,7 +121,9 @@ def set_present_true(index):
     """
     _, db = get_database()
     choice = db[COLLECTION_CLIENT_CHOICES].find_one({'index': index})
-    if choice['is_present'] is None:
+    if not choice['is_present']:
         choice['is_present'] = True
+        choice['time_presence'] = get_present_time()['time_presence']
+        logging.info(f"set present = True for index = {index}")
         db[COLLECTION_CLIENT_CHOICES].replace_one({'index': index}, choice)
     return choice

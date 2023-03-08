@@ -4,6 +4,7 @@ logs/
 db/backups/
 share/
 pkg/
+tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

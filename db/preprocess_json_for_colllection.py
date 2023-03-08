@@ -1,10 +1,10 @@
 import re
 import pandas as pd
 from setup import get_database, errors
-from config import JSON_CLIENTS, RAW_JSON_CLIENTS
-from config import RAW_JSON_EVENTS, JSON_EVENTS
-from config import RAW_JSON_CLIENT_CHOICES, JSON_CLIENT_CHOICES
-from config import COLLECTION_CLIENTS, COLLECTION_EVENTS, COLLECTION_CLIENT_CHOICES
+from config.config import JSON_CLIENTS, RAW_JSON_CLIENTS
+from config.config import RAW_JSON_EVENTS, JSON_EVENTS
+from config.config import RAW_JSON_CLIENT_CHOICES, JSON_CLIENT_CHOICES
+from config.config import COLLECTION_CLIENTS, COLLECTION_EVENTS, COLLECTION_CLIENT_CHOICES
 
 
 def get_raw_clients(json_fpath,columns):

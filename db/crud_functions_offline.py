@@ -1,8 +1,9 @@
 import os
 import json
-from config import JSON_CLIENTS, JSON_EVENTS, JSON_CLIENT_CHOICES
-from config import logging 
+from config.config import JSON_CLIENTS, JSON_EVENTS, JSON_CLIENT_CHOICES
+from config.config import logging 
 from utils import log_exception, catch_exceptions
+from db.utils import get_present_time
 
 def get_json_from_storage(json_file_path):
     with open(json_file_path, 'r') as f:
@@ -70,7 +71,7 @@ def get_client_choices(filters=None):
     """
     return fetch_data_offline(json_file_path=JSON_CLIENT_CHOICES, filters=filters)
 
-
+@catch_exceptions
 def save_client_choices(client_choices):
     with open(JSON_CLIENT_CHOICES, 'w') as f:
         json.dump(client_choices, f, indent=4)
@@ -90,9 +91,11 @@ def set_present_true(index):
     client_choices = get_client_choices()
     _ = [(row_number, row) for row_number,row in enumerate(client_choices) if row['index']==index]
     row_number, choice = _[0]
-    if choice['is_present'] is None:
+    if not choice['is_present']:
         choice['is_present'] = True
+        choice['time_presence'] = get_present_time()['time_presence']
         client_choices[row_number] = choice
+        logging.info(f"set present = True for index = {choice['index']}")
         save_client_choices(client_choices)
     return choice
     

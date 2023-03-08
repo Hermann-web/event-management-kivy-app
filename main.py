@@ -1,7 +1,7 @@
 # main.py
-from config import logging
-import traceback 
 
+from config.config import logging #before everything
+import os
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivy.uix.popup import Popup
@@ -10,11 +10,11 @@ from kivy.uix.label import Label
 from screens.list_screen import ListScreen
 from screens.login_screen import LoginScreen
 from screens.list_user_events import ListUserEventsScreen
-from config import (
+from config.config import (
     screen_login_str, screen_list_participants_str, 
     screen_list_user_events_str, screen_list_events_str
 )
-from config import DEBUG
+from config.config import DEBUG
 from utils import log_exception
 
 # for pyinstaller #to make sure the graphic backend is initialized properly
@@ -102,6 +102,7 @@ class UserListApp(MDApp):
     def build(self):
         # Create a screen manager
         self.theme_cls.theme_style = "Dark"
+        self.icon = "./res/favicon.ico"
         sm = RootScreenManager()
         sm.add_widget(LoginScreen(name=screen_login_str))
         sm.add_widget(ListScreen(name=screen_list_participants_str))
@@ -142,8 +143,24 @@ class UserListApp(MDApp):
 
 
 if __name__ == '__main__':
+    
     app = UserListApp()
     app.run()
+    '''# Set up PyInstaller options
+    options = {
+        "name": "MyApp",
+    }
+    from kivy.utils import platform
+    # Add platform-specific options
+    if platform == "win":
+        options["icon"] = "myapp.ico"
+
+    # Call PyInstaller to build the app
+    from PyInstaller.__main__ import run
+
+    run(["main.py", "-y", "-F"] + [f"--{k}={v}" for k, v in options.items()])
+
+    '''
     '''
     from kivy.resources import resource_add_path, resource_find
     try:

@@ -1,17 +1,19 @@
 import re
 from unidecode import unidecode
-from config import ONLINE 
-from config import logging
+from datetime import datetime
+from config.config import ONLINE 
+from config.config import logging
 from utils import catch_exceptions
 
+
 if ONLINE:
-    logging.info("ONLINE = {ONLINE}. working with online db")
+    logging.info(f"ONLINE: {ONLINE}. working with online db")
     from db.crud_functions_online import (
         get_clients, get_events,
         get_client_choices, set_present_true
         )
 else:
-    logging.info("ONLINE = {ONLINE}. working with local db")
+    logging.info(f"ONLINE: {ONLINE}. working with local db")
     from db.crud_functions_offline import (
         get_clients, get_events,
         get_client_choices, set_present_true
@@ -65,7 +67,7 @@ def filter_json_from_text(json_data, text_input):
         print(f"keys: {keys}")
         filter_ = [(j,sum([int(key in "-".join(list(map(str,doc.values()))).lower()) for key in keys])) for j,doc in enumerate(json_data) ]
         print("1",filter_)
-        filtered_choices =  [json_data[i] for i in map(lambda x: x[0], sorted(filter(lambda x: x[1]!=0, filter_), key=lambda x:x[1], reverse=True))]
+        filtered_choices =  [json_data[i] for i in map(lambda x: x[0], sorted(list(filter(lambda x: x[1]!=0, filter_)), key=lambda x:x[1], reverse=True))]
 
     return list(filtered_choices)
 
@@ -118,3 +120,6 @@ def filter_client_choices_from_text_input(text_input:str=None, filters:dict=None
     json_data = get_client_choices(filters=filters)
     results = filter_json_from_text(json_data, text_input) if text_input else json_data
     return list(results)
+
+
+

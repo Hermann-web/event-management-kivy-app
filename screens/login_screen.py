@@ -5,7 +5,9 @@ from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from utils import catch_exceptions
 
-Builder.load_file(__file__[:-2]+"kv")
+#Builder.load_file(__file__[:-2]+"kv")
+Builder.load_file('.'.join(__file__.split('.')[:-1])+".kv")
+#Builder.load_file("screens/login_screen.kv")
 
 class LoginScreen(Screen):
     def __init__(self, **kwargs):

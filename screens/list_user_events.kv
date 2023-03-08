@@ -1,3 +1,8 @@
+<MyBooleanLabel@Label>:
+    my_bool: False
+    text: "On" if self.my_bool==True else "Off" if self.my_bool==False else self.my_bool
+    size_hint_x: 0.5
+
 <AttendanceMessageBox>
     title: 'Popup Message Box'
     size_hint: None, None
@@ -42,8 +47,8 @@
         text: root.b
         size_hint_x : 0.5
 
-    Label:
-        text: root.c
+    MyBooleanLabel:
+        my_bool: root.c
         size_hint_x : 0.5
 
     Label:
@@ -122,7 +127,7 @@
         RecycleView:
             rv_layout: layout
             id: my_list
-            viewclass: 'MySelectableRows'
+            viewclass: 'AttendanceMySelectableRows'
             SelectableRecycleBoxLayout:
                 id: layout
                 default_size: None, dp(56)
@@ -130,6 +135,8 @@
                 size_hint_y: None
                 height: self.minimum_height
                 orientation: "vertical"
+                multiselect: True
+                touch_multiselect: True
 
         BoxLayout:
             orientation: 'horizontal'

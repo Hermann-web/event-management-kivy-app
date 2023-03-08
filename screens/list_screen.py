@@ -22,7 +22,7 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
-from config import logging
+from config.config import logging
 import threading
 from utils import catch_exceptions
 #------------------------------------
@@ -118,8 +118,9 @@ class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
 ##-------------------------
 
 
-Builder.load_file(__file__[:-2]+"kv")
-
+#Builder.load_file(__file__[:-2]+"kv")
+Builder.load_file('.'.join(__file__.split('.')[:-1])+".kv")
+#Builder.load_file("screens/list_screen.kv")
 
 class ListScreen(Screen):
     def __init__(self, **kwargs):
@@ -181,7 +182,7 @@ class ListScreen(Screen):
         self.to_user_events_list_screen_(client_id=client_id)
     
     @catch_exceptions
-    def search_clients(self):
+    def search_(self):
         user_input = self.ids.search_input.text
         logging.debug(f"user filtering from input: {user_input}")
         results = filter_clients_from_text_input(user_input)
@@ -190,11 +191,11 @@ class ListScreen(Screen):
         self.add_users_for_recycler_view(results)
     
     def add_pointer_focus(self):
-        self.ids.search_input2.focus = True
+        self.ids.search_input.focus = True
 
     @catch_exceptions
     def reset_search_timer(self):
         if self._trigger_search:
             self._trigger_search.cancel()
-        self._trigger_search = threading.Timer(2.0, self.search_clients)
+        self._trigger_search = threading.Timer(2.0, self.search_)
         self._trigger_search.start()

@@ -1,5 +1,5 @@
 import traceback
-from config import logging 
+from config.config import logging 
 
 
 def parse_mongo_obj_to_json_serializable(list_obj):
@@ -22,7 +22,7 @@ def catch_exceptions(func):
         try:
             result = func(*args, **kwargs)
         except Exception as e:
-            logging.info(f"function details: args={args} kwargs={kwargs}")
+            logging.info(f"function details: name={func_name} args={args} kwargs={kwargs}")
             log_exception(err=e, action=f"wrapping {func_name} exceptions (RETURNING NONE): \nmodule:{func.__module__} \nannotations:{func.__annotations__} \ndocstring:{func.__doc__}")
             result = None
         return result
