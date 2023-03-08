@@ -3,9 +3,9 @@
 __author__      = "Hermann Agossou"
 
 from pymongo import MongoClient, errors #do not remove (errors is used elsewhere)
-from config import PROD_ENV, ONLINE
-from config import CONNECTION_STRING, DATABASE_NAME
-from config import logging 
+from config.config import PROD_ENV, ONLINE
+from config.config import CONNECTION_STRING, DATABASE_NAME
+from config.config import logging 
 
 logging.info(f"...PROD_ENV: is set to {PROD_ENV}")
 logging.info(f"...DATABASE_NAME: {DATABASE_NAME}")
