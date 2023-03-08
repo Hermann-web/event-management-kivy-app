@@ -113,3 +113,6 @@ This database contains information about clients attending events organized by M
 - [practical overview on kivy framework](https://realpython.com/mobile-app-kivy-python/#understanding-the-kivy-framework)
 - [python and mongodb](https://www.mongodb.com/languages/python#prerequisites)
 - [kivy app packaging with pyinstaller](https://dev.to/ngonidzashe/using-pyinstaller-to-package-kivy-and-kivymd-desktop-apps-2fmj)
+- read kivy [app doc](https://kivy.org/doc/stable/api-kivy.app.html) 
+- implement recycleview: the [doc](https://kivy.org/doc/stable/api-kivy.uix.recycleview.html) and an [implementation](https://copyprogramming.com/howto/how-to-replace-deprecated-listview-in-kivy)
+- customized kivy logger [config](https://kivy.org/doc/stable/api-kivy.logger.html#) and [code source](https://kivy.org/doc/stable/_modules/kivy/logger.html) and [add timestamp to kivy logs](https://groups.google.com/g/kivy-users/c/0M9uaXCC8XA)
