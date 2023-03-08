@@ -64,9 +64,9 @@ def filter_json_from_text(json_data, text_input):
         # If no filters are provided, return the full list
         filtered_choices = list(json_data)
     else:
-        print(f"keys: {keys}")
+        logging.debug(f"keys: {keys}")
         filter_ = [(j,sum([int(key in "-".join(list(map(str,doc.values()))).lower()) for key in keys])) for j,doc in enumerate(json_data) ]
-        print("1",filter_)
+        logging.debug(f"filter_: {filter_}")
         filtered_choices =  [json_data[i] for i in map(lambda x: x[0], sorted(list(filter(lambda x: x[1]!=0, filter_)), key=lambda x:x[1], reverse=True))]
 
     return list(filtered_choices)

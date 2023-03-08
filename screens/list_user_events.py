@@ -131,7 +131,7 @@ class ListUserEventsScreen(Screen):
         event_id = self.manager.data.get("event_id")
         day = self.manager.data.get("day")
         hour = self.manager.data.get("hour")
-        print("client_id landed: ",client_id)
+        logging.debug(f"client_id landed: {client_id}")
         self.filters = {'id_client':client_id, 'id_event':event_id, 'day':day, 'hour':hour}
         self.add_rows_for_recycler_view()
 
@@ -178,7 +178,7 @@ class ListUserEventsScreen(Screen):
     def admit_attendance(self, id_attendance):
         # Here, you can retrieve the events for the given client_id and display them in the user_events screen.
         # You can use the id_event to retrieve the event information from the database.
-        print("id_attendance = ",id_attendance)
+        logging.debug(f"id_attendance: {id_attendance}")
         updated_row = set_present_true(id_attendance)
         self.update_row(id_attendance, updated_row)
     

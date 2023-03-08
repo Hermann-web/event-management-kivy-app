@@ -45,8 +45,8 @@
         "index": "7",
         "id_client": "2",
         "id_event": "3",
-        "is_present": 0.0,
-        "time_presence": null
+        "is_present": true,
+        "time_presence": "16:48:54"
     },
     {
         "index": "8",

@@ -178,7 +178,7 @@ class ListScreen(Screen):
     def view_events(self, client_id):
         # Here, you can retrieve the events for the given client_id and display them in the user_events screen.
         # You can use the id_event to retrieve the event information from the database.
-        print("client_id = ",client_id)
+        logging.debug(f"client_id: {client_id}")
         self.to_user_events_list_screen_(client_id=client_id)
     
     @catch_exceptions
