@@ -1,11 +1,10 @@
 import os 
-import kivy
-import kivymd
-import logging
+import pathlib #pathlib.Path
+from config.custom_logger import logging
 
 PROD_ENV = False
 DEBUG = True
-ONLINE = True
+ONLINE = False
 
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'
@@ -27,37 +26,17 @@ JSON_CLIENT_CHOICES = "db/db_json/client_choices_clean.json"
 RAW_JSON_CLIENT_CHOICES = "db/db_json/client_choices_raw.json"
 
 BACKUP_FOLDER = "db/backups"
-if not os.path.exists("db"):os.makedirs("db")
-if not os.path.exists(BACKUP_FOLDER):os.makedirs(BACKUP_FOLDER)
+os.makedirs("db", exist_ok=True)
+os.makedirs(BACKUP_FOLDER, exist_ok=True)
 
 COLLECTION_CLIENTS = "clients"
 COLLECTION_EVENTS = "events"
 COLLECTION_CLIENT_CHOICES = "client_choices"
 
 TEMP_FOLDER = "tmp"
-if not os.path.exists(TEMP_FOLDER):os.makedirs(TEMP_FOLDER)
+os.makedirs(TEMP_FOLDER, exist_ok=True)
 CLIENTS_TEMP_PATH = "tmp/clients_tmp.json"
 EVENTS_TEMP_PATH = "tmp/events_tmp.json"
 
 
 
-LOG_FOLDER = "logs"
-if not os.path.exists(LOG_FOLDER):os.makedirs(LOG_FOLDER)
-
-LOGGING_LEVEL = logging.DEBUG
-# Set the log levels for kivy and kivymd to DEBUG
-# Set the log levels for kivy and kivymd to DEBUG
-logging.getLogger('kivy').setLevel(LOGGING_LEVEL)
-logging.getLogger('kivymd').setLevel(LOGGING_LEVEL)
-
-# Configure the logging module
-logging.basicConfig(level=LOGGING_LEVEL,
-                    format='%(asctime)s [%(levelname)s] %(message)s',
-                    handlers=[logging.FileHandler(f'{LOG_FOLDER}/myapp.log')])
-
-# Example usage
-# logging.debug('Debug message')
-# logging.info('Info message')
-# logging.warning('Warning message')
-# logging.error('Error message')
-# logging.critical('Critical message')
