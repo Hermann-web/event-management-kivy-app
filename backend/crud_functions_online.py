@@ -6,6 +6,7 @@ from config.config import COLLECTION_CLIENTS, COLLECTION_CLIENT_CHOICES, COLLECT
 from config.config import CLIENTS_TEMP_PATH, EVENTS_TEMP_PATH
 from config.config import logging
 from backend.utils import get_present_time
+from config.utils import log_exception, catch_exceptions
 
 def fetch_data_online(collection_name, filters):
     _, db = get_database()

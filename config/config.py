@@ -4,7 +4,7 @@ from config.custom_logger import logging
 
 PROD_ENV = False
 DEBUG = True
-ONLINE = False
+ONLINE = True
 
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'
