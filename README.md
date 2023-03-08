@@ -28,6 +28,9 @@ The packaged application can be found in the `dist` directory.
 
 To run the application, navigate to the `dist` directory and run `main.exe`. The application will display a GUI that allows users to view and manage clients and events.
 
+## Logs
+
+Logs can be found in the directory ./share/logs/
 
 ## Database
 
