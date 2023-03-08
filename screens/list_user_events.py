@@ -17,11 +17,11 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import BooleanProperty
 
-from db.crud_functions import filter_client_choices_from_text_input
-from db.crud_functions import set_present_true
+from backend.crud_functions import filter_client_choices_from_text_input
+from backend.crud_functions import set_present_true
 from config.config import logging
 import threading
-from utils import catch_exceptions, log_exception
+from config.utils import catch_exceptions, log_exception
 
 #Builder.load_file(__file__[:-2]+"kv")
 Builder.load_file('.'.join(__file__.split('.')[:-1])+".kv")

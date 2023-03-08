@@ -22,8 +22,8 @@ def get_database():
 
 
 def setup():
-    from db.preprocess_json_for_colllection import clean_clients, clean_events, clean_user_events
-    from db.mongo_backup_and_load import import_json_data_to_mongodb_atlas
+    from backend.preprocess_json_for_colllection import clean_clients, clean_events, clean_user_events
+    from backend.mongo_backup_and_load import import_json_data_to_mongodb_atlas
     
 
     print(f"....clean_clients starting")

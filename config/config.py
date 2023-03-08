@@ -18,12 +18,12 @@ DATABASE_NAME = "AttendanceDb" if PROD_ENV else "AttendanceDbTest"
 
 
 # Define the paths to the JSON data files
-JSON_CLIENTS = "db/db_json/clients_clean.json"
-RAW_JSON_CLIENTS = "db/db_json/clients_raw.json"
-JSON_EVENTS = "db/db_json/events_clean.json"
-RAW_JSON_EVENTS = "db/db_json/events_raw.json"
-JSON_CLIENT_CHOICES = "db/db_json/client_choices_clean.json"
-RAW_JSON_CLIENT_CHOICES = "db/db_json/client_choices_raw.json"
+JSON_CLIENTS = "backend/db_json/clients_clean.json"
+RAW_JSON_CLIENTS = "backend/db_json/clients_raw.json"
+JSON_EVENTS = "backend/db_json/events_clean.json"
+RAW_JSON_EVENTS = "backend/db_json/events_raw.json"
+JSON_CLIENT_CHOICES = "backend/db_json/client_choices_clean.json"
+RAW_JSON_CLIENT_CHOICES = "backend/db_json/client_choices_raw.json"
 
 BACKUP_FOLDER = "db/backups"
 os.makedirs("db", exist_ok=True)

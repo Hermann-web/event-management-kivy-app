@@ -1,7 +1,6 @@
 import re
 from unidecode import unidecode
-from datetime import datetime
-from config.config import ONLINE 
+from config.config import ONLINE
 from config.config import logging
 from config.utils import catch_exceptions
 

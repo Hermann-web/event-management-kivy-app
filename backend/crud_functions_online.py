@@ -1,11 +1,11 @@
 import os
 import json
 from setup import get_database
-from utils import parse_mongo_obj_to_json_serializable
+from config.utils import parse_mongo_obj_to_json_serializable
 from config.config import COLLECTION_CLIENTS, COLLECTION_CLIENT_CHOICES, COLLECTION_EVENTS
 from config.config import CLIENTS_TEMP_PATH, EVENTS_TEMP_PATH
 from config.config import logging
-from db.utils import get_present_time
+from backend.utils import get_present_time
 
 def fetch_data_online(collection_name, filters):
     _, db = get_database()

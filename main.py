@@ -15,7 +15,7 @@ from config.config import (
     screen_list_user_events_str, screen_list_events_str
 )
 from config.config import DEBUG
-from utils import log_exception
+from config.utils import log_exception
 
 # for pyinstaller #to make sure the graphic backend is initialized properly
 #import kivy_deps

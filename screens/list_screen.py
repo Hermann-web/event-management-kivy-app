@@ -13,8 +13,8 @@ import os.path
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.list import MDList, TwoLineListItem, ImageLeftWidget
 from kivy.lang import Builder
-#from db.db_json.clients_handler import get_clients
-from db.crud_functions import get_clients, filter_clients_from_text_input
+#from backend.db_json.clients_handler import get_clients
+from backend.crud_functions import get_clients, filter_clients_from_text_input
 
 
 
@@ -24,7 +24,7 @@ from kivy.uix.boxlayout import BoxLayout
 
 from config.config import logging
 import threading
-from utils import catch_exceptions
+from config.utils import catch_exceptions
 #------------------------------------
 
 class MessageBox(Popup):

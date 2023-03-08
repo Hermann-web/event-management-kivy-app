@@ -12,8 +12,8 @@ a = Analysis(
     binaries=[],
     #...added
     datas=[('list_screen.kv', '.'),('list_user_events.kv', '.'),('login_screen.kv', '.'),
-            ('db/db_json/clients_clean.json', '.\db\db_json'),('db/db_json/events_clean.json', '.\db\db_json'),('db/db_json/client_choices_clean.json', '.\db\db_json'),
-            ('db/db_json/clients_raw.json', '.\db\db_json'),('db/db_json/events_raw.json', '.\db\db_json'),('db/db_json/client_choices_raw.json', '.\db\db_json'),
+            ('backend/db_json/clients_clean.json', './backend/db_json'),('backend/db_json/events_clean.json', './backend/db_json'),('backend/db_json/client_choices_clean.json', './backend/db_json'),
+            ('backend/db_json/clients_raw.json', './backend/db_json'),('backend/db_json/events_raw.json', './backend/db_json'),('backend/db_json/client_choices_raw.json', './backend/db_json'),
             ],
     #...
     hiddenimports=[],
