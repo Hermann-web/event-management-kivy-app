@@ -15,8 +15,6 @@ screen_list_events_str = 'list_events_screen'
 CONNECTION_STRING = "mongodb+srv://pkaCbXZuJtChwHlaMcbr:Uz51Mew4Y0NmQP0C@cluster0.x4jt5zg.mongodb.net/?retryWrites=true&w=majority"
 DATABASE_NAME = "AttendanceDb" if PROD_ENV else "AttendanceDbTest"
 
-
-
 # Define the paths to the JSON data files
 JSON_CLIENTS = "backend/db_json/clients_clean.json"
 RAW_JSON_CLIENTS = "backend/db_json/clients_raw.json"
@@ -37,6 +35,3 @@ TEMP_FOLDER = "tmp"
 os.makedirs(TEMP_FOLDER, exist_ok=True)
 CLIENTS_TEMP_PATH = "tmp/clients_tmp.json"
 EVENTS_TEMP_PATH = "tmp/events_tmp.json"
-
-
-
