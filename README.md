@@ -13,14 +13,54 @@ It uses a mongo db database to get clients and events and update attentance.
 - pyinstaller (for desktop targeted packaging)
 - opencv-python
 
+## installation
+## install with pip
+```bash
+# create an envirnment
+python -m venv venv #or python3 -m venv venv
+# activate the environment
+./venv/Scripts/activate.bat #or source ./venv/Scripts/activate
+# install packages
+pip install -r requirements.txt
+```
+
+## install for run with pipenv
+```bash
+pip install pipenv
+# install required modules from Pipfile.lock
+pipenv install 
+# create a shell environment
+pipenv shell
+```
+
+## install for dev with pipenv
+It will install all required along with dev dependencies including `pyinstaller`
+```bash
+pip install pipenv
+# install all modules from Pipfile.lock
+pipenv install --dev
+# create a shell environment
+pipenv shell
+```
+
+## run the app
+```bash
+python main.py
+```
 
 ## Packaging with PyInstaller 
 
 - Create a virtual environment (optional)
-- Install PyInstaller: `pip install pyinstaller`
-- Package the application: `pyinstaller --onefile main.py`
+- Install PyInstaller is not done: `pip install pyinstaller`
+- Package the application: 
+```bash
+pyinstaller --onefile main.py
+```
 - Modify `main.spec` based on `main.spec.example` to include static files (e.g. `.kv` files) and any other required libraries
-- Repackage the application: `pyinstaller main.spec`
+- Repackage the application: 
+```bash
+pyinstaller main.spec
+```
 
 The packaged application can be found in the `dist` directory.
 
@@ -30,7 +70,7 @@ To run the application, navigate to the `dist` directory and run `main.exe`. The
 
 ## Logs
 
-Logs can be found in the directory ./share/logs/
+Logs can be found in the directory `./share/logs/`
 
 ## Database
 
@@ -81,7 +121,7 @@ This database contains information about clients attending events organized by M
  
 - create virtual env (or not)
 - install pyinstaller (pip install pyinstaller)
-- packeging: pyinstaller --onefile main.py 
+- packaging: `pyinstaller --onefile main.py` 
 - change main.spec with the model in main.spec.example
     - add at the top of the file
         ```
@@ -105,7 +145,7 @@ This database contains information about clients attending events organized by M
         )
         ```
 - repackage the app ```pyinstaller main.spec```
-- run the app: It needs the files main.exe, the static files localised as mentioned in main.spec. 
+- run the app: localized in `./dist/main.exe`
 
 
 ## other ressources
