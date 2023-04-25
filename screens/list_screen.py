@@ -16,8 +16,6 @@ from kivy.lang import Builder
 #from backend.db_json.clients_handler import get_clients
 from backend.crud_functions import get_clients, filter_clients_from_text_input
 
-
-
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -27,7 +25,9 @@ import threading
 from config.utils import catch_exceptions
 #------------------------------------
 
+
 class MessageBox(Popup):
+
     def __init__(self, **kwargs):
         kwargs_ = kwargs.copy()
         del kwargs['id_client']
@@ -41,33 +41,37 @@ class MessageBox(Popup):
     @catch_exceptions
     def popup_dismiss(self):
         self.dismiss()
+
     @catch_exceptions
     def go_to_user_events(self):
         self.screen_root.view_events(self.id_client)
         self.dismiss()
 
 
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
+class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
+                                 RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
     selected_value = StringProperty('')
     # btn_info = ListProperty(['Button 0 Text', 'Button 1 Text', 'Button 2 Text'])
 
+
 class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
     """ Add selection support to the Label """
     index = None
-    
-    a    = StringProperty('')
-    b    = StringProperty('')
-    c     = StringProperty('')
-    d    = StringProperty('')
-    e     = StringProperty('')
+
+    a = StringProperty('')
+    b = StringProperty('')
+    c = StringProperty('')
+    d = StringProperty('')
+    e = StringProperty('')
 
     @catch_exceptions
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
         self.index = index
-        return super(MySelectableRows, self).refresh_view_attrs(rv, index, data)
-    
+        return super(MySelectableRows,
+                     self).refresh_view_attrs(rv, index, data)
+
     @catch_exceptions
     def view_events_by_user(self, id_client):
         self.root = self.parent.parent.parent.parent
@@ -75,8 +79,9 @@ class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
 
     @catch_exceptions
     def on_press(self):
-        self.is_header = self.idx ==''
-        logging.debug(f"self.idx = {self.idx} self.is_header = {self.is_header}")
+        self.is_header = self.idx == ''
+        logging.debug(
+            f"self.idx = {self.idx} self.is_header = {self.is_header}")
         if self.is_header: return
         logging.debug("just pressed it")
 
@@ -84,11 +89,11 @@ class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
         self.root = self.parent.parent.parent.parent
         idx, text, disp = self.idx, self.text, self.disp
         users = self.root.ids.my_list.data
-        the_row = list(filter(lambda x: x['idx']==idx, users))[0]
+        the_row = list(filter(lambda x: x['idx'] == idx, users))[0]
         self.name = f"{the_row['a']} {the_row['b']}"
         logging.debug(f"user data: {the_row}")
 
-        # set id_client 
+        # set id_client
         self.id_client = idx
 
         # # handle click to go to anotherpage from the msgbox
@@ -101,28 +106,31 @@ class MySelectableRows(BoxLayout, RecycleDataViewBehavior, Button):
         self.selected_value = f'id = {idx}\n{disp}'
         # logging.info("save the str into register data")
         # self.root.manager.register_data("message_box_text", self.selected_value)
-
         '''rv = self.parent.parent
         my_list_data = rv.data'''
-        
+
     @catch_exceptions
     def on_release(self):
         if self.is_header: return
         screen_root = self.parent.parent.parent.parent
-        msgbox = MessageBox(id_client=self.id_client, 
-                            disp_data=self.selected_value, 
-                            screen_root=screen_root,
-                            #content = Label(text=disp_data), #iwould need to add buttons on it and group all in a layout
-                            title = self.name)
+        msgbox = MessageBox(
+            id_client=self.id_client,
+            disp_data=self.selected_value,
+            screen_root=screen_root,
+            #content = Label(text=disp_data), #iwould need to add buttons on it and group all in a layout
+            title=self.name)
         msgbox.open()
+
+
 ##-------------------------
 
-
 #Builder.load_file(__file__[:-2]+"kv")
-Builder.load_file('.'.join(__file__.split('.')[:-1])+".kv")
+Builder.load_file('.'.join(__file__.split('.')[:-1]) + ".kv")
 #Builder.load_file("screens/list_screen.kv")
 
+
 class ListScreen(Screen):
+
     def __init__(self, **kwargs):
         super(ListScreen, self).__init__(**kwargs)
         self.screen_name = kwargs["name"]
@@ -134,7 +142,7 @@ class ListScreen(Screen):
         '''users = [{'firstname': 'John', 'surname': 'Doe', 'cin': '1234567890', 'role': 'Manager', 'firm': 'ACME Inc.'},
                  {'firstname': 'Jane', 'surname': 'Doe', 'cin': '0987654321', 'role': 'Employee', 'firm': 'ACME Inc.'},
                  {'firstname': 'Bob', 'surname': 'Smith', 'cin': '1357908642', 'role': 'Employee', 'firm': 'XYZ Corp'}]'''
-        
+
         # call the get_clients function to retrieve a list of client dictionaries
         users = get_clients()
         '''for user in users:
@@ -148,39 +156,57 @@ class ListScreen(Screen):
         '''
         self.add_users_for_recycler_view(users)
 
-        
     @catch_exceptions
     def add_users_for_recycler_view(self, users):
         logging.debug(f"users index: got {[elt['index'] for elt in users]}")
-        h = {'idx':'', 'disp': '', 'a':'firstname', 'b':'surname', 'c':'cin', 'd':'role', 'e':'firm'}
-        self.ids.my_list.data = [h] + [{'idx':user["index"], 'disp': self.row_to_str(user), 'a':user['firstname'], 'b':user['surname'], 'c':user['cin'], 'd':user['role'], 'e':user['firm']} for user in users] #[{'text': user['firstname'] + " " + user['surname']} for user in users]
+        h = {
+            'idx': '',
+            'disp': '',
+            'a': 'firstname',
+            'b': 'surname',
+            'c': 'cin',
+            'd': 'role',
+            'e': 'firm'
+        }
+        self.ids.my_list.data = [h] + [
+            {
+                'idx': user["index"],
+                'disp': self.row_to_str(user),
+                'a': user['firstname'],
+                'b': user['surname'],
+                'c': user['cin'],
+                'd': user['role'],
+                'e': user['firm']
+            } for user in users
+        ]  #[{'text': user['firstname'] + " " + user['surname']} for user in users]
         self.add_pointer_focus()
         self.ids.nb_results.text = f"{len(users)} results"
 
     @catch_exceptions
     def row_to_str(self, user):
         text = ""
-        for key,val in user.items():
-            if key in ["id","index","id_","_id"]: continue
-            text+= f"->{key:^15}: {val}\n"
+        for key, val in user.items():
+            if key in ["id", "index", "id_", "_id"]: continue
+            text += f"->{key:^15}: {val}\n"
         return text
         #return f"{user['firstname']} {user['surname']} {user['cin']} \n{user['role']}, {user['firm']}"
-    
+
     def to_login_screen_(self):
         self.manager.to_login_screen(self.screen_name)
 
     def to_events_screen_(self):
         self.manager.to_events_screen(self.screen_name)
-    
+
     def to_user_events_list_screen_(self, client_id):
-        self.manager.to_user_events_list_screen(self.screen_name, client_id=client_id)
+        self.manager.to_user_events_list_screen(self.screen_name,
+                                                client_id=client_id)
 
     def view_events(self, client_id):
         # Here, you can retrieve the events for the given client_id and display them in the user_events screen.
         # You can use the id_event to retrieve the event information from the database.
         logging.debug(f"client_id: {client_id}")
         self.to_user_events_list_screen_(client_id=client_id)
-    
+
     @catch_exceptions
     def search_(self):
         user_input = self.ids.search_input.text
@@ -189,7 +215,7 @@ class ListScreen(Screen):
         logging.debug(f"nb user filtered: {len(results)}")
         logging.debug(f"user filtered: {[elt['index'] for elt in results]}")
         self.add_users_for_recycler_view(results)
-    
+
     def add_pointer_focus(self):
         self.ids.search_input.focus = True
 
