@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__      = "Hermann Agossou"
+__author__ = "Hermann Agossou"
 
-from pymongo import MongoClient, errors #do not remove (errors is used elsewhere)
+from pymongo import MongoClient, errors  #do not remove (errors is used elsewhere)
 import sqlite3
 from config.config import PROD_ENV, ONLINE
 from config.config import CONNECTION_STRING, DATABASE_NAME
 from config.config import SQLITE_DB
-from config.config import logging 
+from config.config import logging
 
 logging.info(f"...PROD_ENV: is set to {PROD_ENV}")
 logging.info(f"...DATABASE_NAME: {DATABASE_NAME}")
 logging.info(f"...ONLINE: is set to {ONLINE}")
-
 
 
 def get_database():

@@ -1,10 +1,11 @@
-import os 
-import pathlib #pathlib.Path
+import os
+import pathlib  #pathlib.Path
 from config.custom_logger import logging
 
 PROD_ENV = False
 DEBUG = True
 ONLINE = True
+OFFLINE_FORMAT = "SQLITE"
 
 screen_login_str = 'login_screen'
 screen_list_participants_str = 'list_screen'
@@ -16,12 +17,15 @@ CONNECTION_STRING = "mongodb+srv://pkaCbXZuJtChwHlaMcbr:Uz51Mew4Y0NmQP0C@cluster
 DATABASE_NAME = "AttendanceDb" if PROD_ENV else "AttendanceDbTest"
 
 # Define the paths to the JSON data files
-JSON_CLIENTS = "backend/db_json/clients_clean.json"
 RAW_JSON_CLIENTS = "backend/db_json/clients_raw.json"
-JSON_EVENTS = "backend/db_json/events_clean.json"
 RAW_JSON_EVENTS = "backend/db_json/events_raw.json"
-JSON_CLIENT_CHOICES = "backend/db_json/client_choices_clean.json"
 RAW_JSON_CLIENT_CHOICES = "backend/db_json/client_choices_raw.json"
+
+JSON_CLIENTS = "backend/db_json/clients_clean.json"
+JSON_EVENTS = "backend/db_json/events_clean.json"
+JSON_CLIENT_CHOICES = "backend/db_json/client_choices_clean.json"
+
+SQLITE_DB = "backend/db.sqlite"
 
 BACKUP_FOLDER = "db/backups"
 os.makedirs("db", exist_ok=True)
