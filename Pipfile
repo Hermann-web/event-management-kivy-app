@@ -12,6 +12,8 @@ unidecode = "==1.3.6"
 
 [dev-packages]
 pyinstaller = "==5.8.0"
+watchdog = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.10"
