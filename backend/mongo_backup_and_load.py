@@ -1,26 +1,34 @@
 import json
 from datetime import datetime
-from config.utils import parse_mongo_obj_to_json_serializable, get_database
+from config.utils import parse_mongo_obj_to_json_serializable
+from config.db import get_database
 from config.config import PROD_ENV
-from config.config import JSON_CLIENTS,JSON_EVENTS,JSON_CLIENT_CHOICES
+from config.config import JSON_CLIENTS, JSON_EVENTS, JSON_CLIENT_CHOICES
 # colections names
-from config.config import COLLECTION_CLIENTS,COLLECTION_EVENTS,COLLECTION_CLIENT_CHOICES
+from config.config import COLLECTION_CLIENTS, COLLECTION_EVENTS, COLLECTION_CLIENT_CHOICES
 
 
 def create_backups(db):
     # Define the paths to the backup files
-    test_or_prod = "prod" if PROD_ENV==True else "test"
+    test_or_prod = "prod" if PROD_ENV == True else "test"
     time_ = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     BACKUP_CLIENTS = f"db/backups/{test_or_prod}_clients_backup_{time_}.json"
     BACKUP_EVENTS = f"db/backups/{test_or_prod}_events_backup_{time_}.json"
     BACKUP_CLIENT_CHOICES = f"db/backups/{test_or_prod}_client_choices_backup_{time_}.json"
 
     with open(BACKUP_CLIENTS, 'w') as f:
-        json.dump(parse_mongo_obj_to_json_serializable(db[COLLECTION_CLIENTS].find()), f)
+        json.dump(
+            parse_mongo_obj_to_json_serializable(
+                db[COLLECTION_CLIENTS].find()), f)
     with open(BACKUP_EVENTS, 'w') as f:
-        json.dump(parse_mongo_obj_to_json_serializable(db[COLLECTION_EVENTS].find()), f)
+        json.dump(
+            parse_mongo_obj_to_json_serializable(db[COLLECTION_EVENTS].find()),
+            f)
     with open(BACKUP_CLIENT_CHOICES, 'w') as f:
-        json.dump(parse_mongo_obj_to_json_serializable(db[COLLECTION_CLIENT_CHOICES].find()), f)
+        json.dump(
+            parse_mongo_obj_to_json_serializable(
+                db[COLLECTION_CLIENT_CHOICES].find()), f)
+
 
 def delete_collections(db):
     # Delete all documents from the clients, events, and client_choices collections
@@ -44,8 +52,6 @@ def import_local_json_online_bdd(db):
     with open(JSON_CLIENT_CHOICES, 'r') as f:
         client_choices_data = json.load(f)
         db.client_choices.insert_many(client_choices_data)
-
-
 
 
 def import_json_data_to_mongodb_atlas():
